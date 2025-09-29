@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FaChevronDown, FaChevronUp, FaFacebook, FaInstagram, FaYoutube } from 'react-icons/fa';
+import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 
 export default function Footer() {
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({});

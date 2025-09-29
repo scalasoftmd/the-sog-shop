@@ -5,8 +5,12 @@ import Checkout from './pages/Checkout';
 import Header from './components/NavBar'; // Import Header
 import PromoBar from './components/PromoBar'; // Import PromoBar
 import Footer from './components/Footer';
-import Shop from './pages/Shop';
-import Cart from './pages/Cart';
+import Fashion from './pages/Fashion';
+import Bag from './pages/Bag';
+import OrderSuccess from './pages/OrderSucces';
+import Account from './pages/Account';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
 
 function App() {
   return (
@@ -15,10 +19,14 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/product/:id" element={<Product />} />
+        <Route path="/fashion/:id" element={<Product />} />
         <Route path="/checkout" element={<Checkout />} />
-        <Route path="/shop" element={<Shop />} />
-        <Route path="/cart" element={<Cart />} />
+        <Route path="/fashion" element={<Fashion />} />
+        <Route path="/bag" element={<Bag />} />
+        <Route path="/order-success" element={<OrderSuccess />} />
+        <Route path="/account" element={<Account />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
       </Routes>
       <Footer />
     </Router>

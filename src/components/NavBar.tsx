@@ -1,11 +1,23 @@
 import { Link } from 'react-router-dom';
 import { UserIcon as UserIconSolid, HeartIcon as HeartIconSolid, ShoppingBagIcon as ShoppingBagIconSolid, Bars3Icon, XMarkIcon } from '@heroicons/react/24/solid';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [expandedMenus, setExpandedMenus] = useState<Record<string, boolean>>({});
+  const [bagCount, setBagCount] = useState<number>(0);
+
+  useEffect(() => {
+    // Update bag count from localStorage
+    const updateBagCount = () => {
+      const bag = JSON.parse(localStorage.getItem("bag") || "[]");
+      setBagCount(bag.length);
+    };
+    updateBagCount();
+    window.addEventListener("bagUpdated", updateBagCount);
+    return () => window.removeEventListener("bagUpdated", updateBagCount);
+  }, []);
 
   const toggleMenu = (menu: string) => {
     setExpandedMenus((prev) => ({ ...prev, [menu]: !prev[menu] }));
@@ -36,13 +48,18 @@ export default function Navbar() {
       {/* Logo Center */}
       <div className="flex-none">
         <Link to="/">
-          <img src="/assets/logo.png" alt="Logo" className="h-5" />
+          <img src="/assets/logo-white.png" alt="Logo" className="h-5" />
         </Link>
       </div>
       {/* Shopping Bag Right */}
       <div className="flex-none flex items-center ml-auto md:hidden">
-        <Link to="/cart">
+        <Link to="/bag" className="relative">
           <ShoppingBagIconSolid className="h-4 w-4 text-white hover:text-yellow-400" />
+          {bagCount > 0 && (
+            <span className="absolute -top-3 -right-3  md:-top-5 md:-right-5 bg-yellow-400 text-black px-[7px] py-0.5 rounded-full text-xs font-bold">
+              {bagCount}
+            </span>
+          )}
         </Link>
       </div>
       {/* Menu Center */}
@@ -107,10 +124,15 @@ export default function Navbar() {
           <UserIconSolid className="h-4 w-4 text-white hover:text-yellow-400" />
         </Link>
         <Link to="/favorites">
-          <HeartIconSolid className="h-4 w-4 text-white hover:text-yellow-400" />
+          <HeartIconSolid className="h-5 w-5 text-white hover:text-yellow-400" />
         </Link>
-        <Link to="/cart">
-          <ShoppingBagIconSolid className="h-4 w-4 text-white hover:text-yellow-400" />
+        <Link to="/bag" className="relative">
+          <ShoppingBagIconSolid className="h-5 w-5 text-white hover:text-yellow-400" />
+          {bagCount > 0 && (
+            <span className="absolute -top-2 -right-2 bg-yellow-400 text-black rounded-full px-2 py-0.5 text-xs font-bold">
+              {bagCount}
+            </span>
+          )}
         </Link>
       </div>
     </header>
