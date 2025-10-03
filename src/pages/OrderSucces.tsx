@@ -18,8 +18,10 @@ export default function OrderSuccess() {
   }, []);
 
   return (
-    <div className="max-w-3xl mx-auto py-16 px-4 text-center">
-      <h1 className="text-4xl font-bold text-green-600 mb-6">Thank You!</h1>
+    <div className="max-w-3xl mx-auto py-16 px-4 text-center min-h-[80vh] flex flex-col justify-center">
+      <h1 className="text-5xl font-extrabold text-green-600 mb-6">
+        Hi, Thank You!
+      </h1>
       <p className="text-lg mb-4">Your order has been successfully placed.</p>
 
       {orderId && (
@@ -30,13 +32,14 @@ export default function OrderSuccess() {
 
       {amount && (
         <p className="mb-6">
-          <span className="font-semibold">Amount:</span> € {Number(amount).toFixed(2)}
+          <span className="font-semibold">Amount:</span> €{" "}
+          {Number(amount).toFixed(2)}
         </p>
       )}
 
       <a
         href="/fashion"
-        className="inline-block bg-black text-white p-5 rounded font-bold hover:bg-gray-800 transition"
+        className="w-70 inline-block bg-black text-white px-6 py-3 rounded font-bold hover:bg-gray-800 transition mx-auto"
       >
         Continue Shopping
       </a>

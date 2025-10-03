@@ -3,7 +3,7 @@ import '@fortawesome/fontawesome-free/css/all.css';
 
 export default function HeroSection() {
   return (
-    <section className="hero relative w-full h-[92vh] bg-gray-100 text-center pt-16 mb-20">
+    <section className="hero md:mt-0 mt-20 relative w-full h-[92vh] bg-gray-100 text-center pt-16 mb-20">
       <img
         src="/assets/hero.png"
         alt="Hero Background"

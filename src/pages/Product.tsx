@@ -4,19 +4,8 @@ import Loader from '../components/Loader';
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
-// Use a plain object instead of enum for erasableSyntaxOnly compatibility
-export const AttributeEnum = {
-  Color: 1,
-  Gender: 4,
-  Size: 5,
-} as const;
-
-// Example usage:
-// AttributeEnum.Color === 1
-// AttributeEnum.Size === 5
-
 export default function Product() {
-  const { id } = useParams();
+  const { productId } = useParams();
   const [selectedImage, setSelectedImage] = useState<string>('');
   const [images, setImages] = useState<string[]>([]);
   const [selectedSize, setSelectedSize] = useState<string>('');
@@ -27,23 +16,21 @@ export default function Product() {
   const [delivery, setDelivery] = useState<string>('');
 
   useEffect(() => {
-    if (!id) return;
+    if (!productId) return;
     setLoading(true);
 
-    // Fetch item and variations in parallel
     Promise.all([
-      fetch(`${apiUrl}/items/${id}`).then(res => res.json()),
-      fetch(`${apiUrl}/items/${id}/variations`).then(res => res.json()),
+      fetch(`${apiUrl}/items/${productId}`).then(res => res.json()),
+      fetch(`${apiUrl}/items/${productId}/variations`).then(res => res.json()),
       fetch(`${apiUrl}/attributes`).then(res => res.json())
     ])
       .then(([itemDetails, variationData, attrsData]) => {
         const textInfo = Array.isArray(itemDetails.texts) && itemDetails.texts[0] ? itemDetails.texts[0] : {};
-        const name = textInfo.title || '';
+        const name = textInfo.name1 || '';
         const description = textInfo.description || '';
         setDelivery("Delivery within 2-3 working days");
 
         const variations = Array.isArray(variationData.entries) ? variationData.entries : [];
-        // Collect all unique images from all variations
         const allImages = [
           ...new Set(
             variations.flatMap((v: any) => [
@@ -55,7 +42,6 @@ export default function Product() {
         setImages(allImages as string[]);
         setSelectedImage(typeof allImages[0] === "string" ? allImages[0] : '');
 
-        // Merge all variationAttributeValues from all variations
         const allVariationAttributeValues: any[] = variations.flatMap((v: any) =>
           Array.isArray(v.variationAttributeValues) ? v.variationAttributeValues : []
         );
@@ -69,11 +55,9 @@ export default function Product() {
           variationAttributeValues: allVariationAttributeValues
         });
 
-        // Build sizes/colors from attribute values, not just selected ones
         let sizeArr: string[] = [];
         let colorArr: any[] = [];
         if (Array.isArray(attrsData.entries)) {
-          // Sizes
           const sizeAttr = attrsData.entries.find((a: any) => a.backendName.toLowerCase() === "size");
           if (sizeAttr && Array.isArray(sizeAttr.values)) {
             sizeArr = sizeAttr.values.map((val: any) => {
@@ -85,7 +69,6 @@ export default function Product() {
               return valueName;
             });
           }
-          // Colors
           const colorAttr = attrsData.entries.find((a: any) => a.backendName.toLowerCase() === "color");
           if (colorAttr && Array.isArray(colorAttr.values)) {
             colorArr = colorAttr.values.map((val: any) => {
@@ -110,7 +93,7 @@ export default function Product() {
         setSizes([]);
         setLoading(false);
       });
-  }, [id]);
+  }, [productId]);
 
   if (loading) {
     return <Loader />;
@@ -121,10 +104,8 @@ export default function Product() {
       ?.filter((vav: any) => vav.attribute?.backendName?.toLowerCase() === "color")
       .map((vav: any) => ({ value: vav.attributeValue?.backendName, image: "" })) || [];
 
-  // Add to bag handler
   const handleAddToBag = () => {
     if (!product || !product.variationAttributeValues) return;
-    // Find the selected variant by size and color
     const selectedVariant = product.variationAttributeValues.find(
       (vav: any) =>
         (selectedSize ? vav.attribute?.backendName?.toLowerCase() === "size" && vav.attributeValue?.backendName === selectedSize : true) &&

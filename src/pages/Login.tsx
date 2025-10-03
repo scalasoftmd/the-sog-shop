@@ -38,34 +38,36 @@ export default function Login() {
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-white rounded shadow mt-10">
-      <h2 className="text-2xl font-bold mb-6">Login</h2>
-      {error && <div className="text-red-600 mb-4">{error}</div>}
-      <form onSubmit={handleLogin} className="flex flex-col gap-4">
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          className="w-full border rounded px-4 py-3"
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          className="w-full border rounded px-4 py-3"
-        />
-        <button
-          type="submit"
-          disabled={loading}
-          className="bg-black text-white py-3 rounded mt-2 hover:bg-gray-900 transition"
-        >
-          {loading ? "Logging in..." : "Login"}
-        </button>
-      </form>
+    <div className="min-h-[80vh] flex items-center justify-center">
+      <div className="max-w-md mx-auto p-6 bg-white rounded shadow mt-10 w-full">
+        <h2 className="text-2xl font-bold mb-6">Login</h2>
+        {error && <div className="text-red-600 mb-4">{error}</div>}
+        <form onSubmit={handleLogin} className="flex flex-col gap-4">
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="w-full border rounded px-4 py-3"
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            className="w-full border rounded px-4 py-3"
+          />
+          <button
+            type="submit"
+            disabled={loading}
+            className="bg-black text-white py-3 rounded mt-2 hover:bg-gray-900 transition"
+          >
+            {loading ? "Logging in..." : "Login"}
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

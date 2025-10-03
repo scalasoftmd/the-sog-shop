@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import countries from "world-countries";
+import { PlentyCountry } from "../models/enums/PlentyCountry";
 
 interface CartItem {
   id: number;
@@ -9,20 +9,44 @@ interface CartItem {
   oldPrice?: number;
   size?: string;
   color?: string;
-  quantity?: number;
+  quantity: number;
+  variationId?: number;
 }
 
-interface Address {
-  firstName: string;
-  lastName: string;
-  email?: string;
-  country: string;
-  address1: string;
-  address2?: string;
-  city: string;
-  zip: string;
-  phone: string;
+interface OrderItem {
+  itemId: number;
+  variationId?: number;
+  typeId?: number;
+  quantity: number;
+  amounts: {
+    currency: string;
+    priceOriginalNet: number;
+    priceOriginalGross: number;
+  }[];
+  name?: string;
+  image?: string;
+  size?: string;
+  color?: string;
 }
+
+export interface Address {
+  typeId: number;        // 1 = billing, 2 = delivery
+  salutation?: "mr" | "ms" | "company";
+  name1: string;         // first name or main name
+  name2?: string;        // last name or secondary name
+  name3?: string;        // optional third name
+  company?: string;      // company name
+  address1: string;      // street + number
+  address2?: string;     // optional additional address
+  address3?: string;     // optional additional address
+  zip: string;           // postal code
+  town: string;          // city
+  countryId: number;     // PlentyONE country ID
+  email?: string;        // email for this address/contact
+  phone?: string;        // phone number
+  isDefault?: boolean;   // true if default address
+}
+
 
 export default function Checkout() {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
@@ -31,35 +55,63 @@ export default function Checkout() {
   const [showDelivery, setShowDelivery] = useState(false);
 
   const [billing, setBilling] = useState<Address>({
-    firstName: "",
-    lastName: "",
-    email: "",
-    country: "",
+    typeId: 1, // Billing address
+    salutation: undefined,
+    name1: "",
+    name2: "",
+    name3: "",
+    company: "",
     address1: "",
     address2: "",
-    city: "",
+    address3: "",
     zip: "",
+    town: "",
+    countryId: 0,
+    email: "",
     phone: "",
+    isDefault: false,
   });
 
   const [delivery, setDelivery] = useState<Address>({
-    firstName: "",
-    lastName: "",
-    country: "",
+    typeId: 2, // Delivery address
+    salutation: undefined,
+    name1: "",
+    name2: "",
+    name3: "",
+    company: "",
     address1: "",
     address2: "",
-    city: "",
+    address3: "",
     zip: "",
+    town: "",
+    countryId: 0,
+    email: "",
     phone: "",
+    isDefault: false,
   });
 
   const apiUrl = import.meta.env.VITE_API_URL;
 
-  // Create country options from world-countries
-  const countryOptions = countries
-  .map((c) => ({ value: c.cca2, label: c.name.common }))
-  .sort((a, b) => a.label.localeCompare(b.label));
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    type: "billing" | "delivery"
+  ) => {
+    const { name, value } = e.target;
+    if (type === "billing") {
+      setBilling((prev) => ({ ...prev, [name]: name === "countryId" ? Number(value) : value }));
+    } else {
+      setDelivery((prev) => ({ ...prev, [name]: name === "countryId" ? Number(value) : value }));
+    }
+  };
 
+  const countryOptions = Object.entries(PlentyCountry)
+    .map(([name, id]) => ({ id, name }))
+    .sort((a, b) => {
+      if (a.name.localeCompare(b.name) === 0) {
+        return a.id - b.id;
+      }
+      return a.name.localeCompare(b.name);
+    });
 
   useEffect(() => {
     const bag: CartItem[] = JSON.parse(localStorage.getItem("bag") || "[]");
@@ -69,16 +121,20 @@ export default function Checkout() {
     );
   }, []);
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-    type: "billing" | "delivery"
-  ) => {
-    const { name, value } = e.target;
-    if (type === "billing") {
-      setBilling((prev) => ({ ...prev, [name]: value }));
-    } else {
-      setDelivery((prev) => ({ ...prev, [name]: value }));
-    }
+  const buildOrderItems = (): OrderItem[] => {
+    return cartItems.map((item) => ({
+      typeId: 4, // product line item
+      itemId: item.id,
+      variationId: item.variationId,
+      quantity: item.quantity,
+      amounts: [
+        {
+          currency: "EUR",
+          priceOriginalNet: Number(Number(item.price).toFixed(2)), // Ensure item.price is a number
+          priceOriginalGross: Number(Number(item.price).toFixed(2)), // Ensure item.price is a number
+        },
+      ],
+    }));
   };
 
   const handleMolliePay = async () => {
@@ -90,19 +146,20 @@ export default function Checkout() {
     try {
       setLoading(true);
 
-      const orderId = Date.now().toString();
+      const deliveryAddress = showDelivery ? delivery : billing;
+
+      const orderItemsPayload = buildOrderItems();
+
+      console.log("Order Items:", buildOrderItems());
 
       const res = await fetch(`${apiUrl}/create-payment`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          orderId,
-          amount: subtotal.toFixed(2),
-          currency: "EUR",
-          redirectUrl: `${window.location.origin}/order-success`,
-          cartItems,
+          orderItems: orderItemsPayload,
           billing,
-          delivery: showDelivery ? delivery : billing,
+          delivery: deliveryAddress,
+          redirectUrl: `${window.location.origin}/order-success`,
         }),
       });
 
@@ -133,14 +190,14 @@ export default function Checkout() {
         {cartItems.map((item, idx) => (
           <div
             key={idx}
-            className="flex flex-col md:flex-row gap-8 items-center border-b pb-6 mb-6"
+            className="flex flex-col md:flex-row gap-8 items-start md:items-center border-b pb-6 mb-6" // Align items to the left on mobile
           >
             <img
               src={item.image}
               alt={item.name}
-              className="w-40 h-56 object-cover rounded"
+              className="w-40 h-50 object-cover rounded" // Slightly increased size for mobile
             />
-            <div className="flex-1">
+            <div className="flex-1 text-left"> {/* Align text to the left */}
               <div className="text-xl font-semibold mb-2">{item.name}</div>
               <div className="mb-1 text-base">
                 <span className="font-bold">Size:</span> {item.size}
@@ -157,10 +214,10 @@ export default function Checkout() {
               {item.oldPrice && (
                 <>
                   <div className="text-gray-400 line-through text-sm">
-                    Was: € {Number(item.oldPrice).toFixed(2)}
+                    Vorher: € {Number(item.oldPrice).toFixed(2)}
                   </div>
                   <div className="text-green-600 text-sm">
-                    You Save: €{" "}
+                    Sie sparen: €{" "}
                     {(Number(item.oldPrice) - Number(item.price)).toFixed(2)}
                   </div>
                 </>
@@ -183,15 +240,22 @@ export default function Checkout() {
           </h3>
           <form>
             <input
-              name="firstName"
-              value={billing.firstName}
+              name="name1"
+              value={billing.name1}
               onChange={(e) => handleInputChange(e, "billing")}
               className="w-full border rounded px-4 py-3 mb-4"
               placeholder="First Name"
             />
             <input
-              name="lastName"
-              value={billing.lastName}
+              name="name2"
+              value={billing.name2}
+              onChange={(e) => handleInputChange(e, "billing")}
+              className="w-full border rounded px-4 py-3 mb-4"
+              placeholder="Middle Name"
+            />
+            <input
+              name="name3"
+              value={billing.name3}
               onChange={(e) => handleInputChange(e, "billing")}
               className="w-full border rounded px-4 py-3 mb-4"
               placeholder="Last Name"
@@ -204,15 +268,15 @@ export default function Checkout() {
               placeholder="Email"
             />
             <select
-              name="country"
-              value={billing.country}
+              name="countryId"
+              value={billing.countryId}
               onChange={(e) => handleInputChange(e, "billing")}
               className="w-full border rounded px-4 py-3 mb-4"
             >
               <option value="">Select country</option>
               {countryOptions.map((c) => (
-                <option key={c.value} value={c.label}>
-                  {c.label}
+                <option key={c.id} value={c.id}>
+                  {c.name}
                 </option>
               ))}
             </select>
@@ -231,8 +295,8 @@ export default function Checkout() {
               placeholder="Address Line 2"
             />
             <input
-              name="city"
-              value={billing.city}
+              name="town"
+              value={billing.town}
               onChange={(e) => handleInputChange(e, "billing")}
               className="w-full border rounded px-4 py-3 mb-4"
               placeholder="City / Suburb"
@@ -278,31 +342,45 @@ export default function Checkout() {
             </label>
           </div>
           {showDelivery && (
-            <form>
+            <>
               <input
-                name="firstName"
-                value={delivery.firstName}
+                name="name1"
+                value={delivery.name1}
                 onChange={(e) => handleInputChange(e, "delivery")}
                 className="w-full border rounded px-4 py-3 mb-4"
                 placeholder="First Name*"
               />
               <input
-                name="lastName"
-                value={delivery.lastName}
+                name="name2"
+                value={delivery.name2}
+                onChange={(e) => handleInputChange(e, "delivery")}
+                className="w-full border rounded px-4 py-3 mb-4"
+                placeholder="Middle Name"
+              />
+              <input
+                name="name3"
+                value={delivery.name3}
                 onChange={(e) => handleInputChange(e, "delivery")}
                 className="w-full border rounded px-4 py-3 mb-4"
                 placeholder="Last Name*"
               />
+              <input
+                name="town"
+                value={delivery.town}
+                onChange={(e) => handleInputChange(e, "delivery")}
+                className="w-full border rounded px-4 py-3 mb-4"
+                placeholder="City*"
+              />
               <select
-                name="country"
-                value={delivery.country}
+                name="countryId"
+                value={delivery.countryId}
                 onChange={(e) => handleInputChange(e, "delivery")}
                 className="w-full border rounded px-4 py-3 mb-4"
               >
                 <option value="">Select country</option>
                 {countryOptions.map((c) => (
-                  <option key={c.value} value={c.label}>
-                    {c.label}
+                  <option key={c.id} value={c.id}>
+                    {c.name}
                   </option>
                 ))}
               </select>
@@ -322,7 +400,7 @@ export default function Checkout() {
               />
               <input
                 name="city"
-                value={delivery.city}
+                value={delivery.town}
                 onChange={(e) => handleInputChange(e, "delivery")}
                 className="w-full border rounded px-4 py-3 mb-4"
                 placeholder="City / Suburb*"
@@ -341,19 +419,18 @@ export default function Checkout() {
                 className="w-full border rounded px-4 py-3 mb-4"
                 placeholder="Mobile Phone*"
               />
-            </form>
+            </>
           )}
         </div>
       </div>
 
-      {/* ✅ Pay with Mollie button */}
       <div className="text-center">
         <button
           onClick={handleMolliePay}
           disabled={loading}
           className="bg-black text-white p-5 font-bold text-lg rounded mb-4 cursor-pointer hover:bg-gray-800 disabled:opacity-50"
         >
-          {loading ? "Redirecting..." : "Proceed to Payment"}
+          {loading ? "Weiterleitung..." : "Proceed to Payment"}
         </button>
       </div>
     </div>

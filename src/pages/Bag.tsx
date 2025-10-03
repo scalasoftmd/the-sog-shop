@@ -47,7 +47,7 @@ const Bag = () => {
                   <span className="font-bold">Color:</span> {item.color}
                 </div>
                 <div className="flex items-center gap-4 mt-4">
-                  <span className="font-bold">QTY</span>
+                  <span className="font-bold">QUANTITY</span>
                   <select
                     className="border rounded px-2 py-1"
                     value={item.quantity || 1}
@@ -73,7 +73,7 @@ const Bag = () => {
                 </div>
                 {item.savings && (
                   <div className="text-red-500 text-sm mt-1">
-                    Applied: {item.savings}
+                    Savings: {item.savings}
                   </div>
                 )}
               </div>

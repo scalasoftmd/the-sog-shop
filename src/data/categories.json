@@ -1,0 +1,32 @@
+{
+  "men": [
+    { "id": 1, "name": "Shirts" },
+    { "id": 2, "name": "T-Shirts" },
+    { "id": 3, "name": "Jeans" },
+    { "id": 4, "name": "Jackets" },
+    { "id": 5, "name": "Shoes" },
+    { "id": 6, "name": "Accessories" },
+    { "id": 7, "name": "Hoodies" },
+    { "id": 8, "name": "Blablabla" }
+  ],
+  "women": [
+    { "id": 1, "name": "Dresses" },
+    { "id": 2, "name": "Tops" },
+    { "id": 3, "name": "Skirts" },
+    { "id": 4, "name": "Pants" },
+    { "id": 5, "name": "Shoes" },
+    { "id": 6, "name": "Accessories" },
+    { "id": 7, "name": "Hoodies" },
+    { "id": 8, "name": "Blablabla" }
+  ],
+  "kids": [
+    { "id": 1, "name": "T-Shirts" },
+    { "id": 2, "name": "Shorts" },
+    { "id": 3, "name": "Jeans" },
+    { "id": 4, "name": "Jackets" },
+    { "id": 5, "name": "Shoes" },
+    { "id": 6, "name": "Accessories" },
+    { "id": 7, "name": "Hoodies" },
+    { "id": 8, "name": "Blablabla" }
+  ]
+}
