@@ -150,8 +150,6 @@ export default function Checkout() {
 
       const orderItemsPayload = buildOrderItems();
 
-      console.log("Order Items:", buildOrderItems());
-
       const res = await fetch(`${apiUrl}/create-payment`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -214,10 +212,10 @@ export default function Checkout() {
               {item.oldPrice && (
                 <>
                   <div className="text-gray-400 line-through text-sm">
-                    Vorher: € {Number(item.oldPrice).toFixed(2)}
+                    Previously: € {Number(item.oldPrice).toFixed(2)}
                   </div>
                   <div className="text-green-600 text-sm">
-                    Sie sparen: €{" "}
+                    You save: €{" "}
                     {(Number(item.oldPrice) - Number(item.price)).toFixed(2)}
                   </div>
                 </>
@@ -430,7 +428,7 @@ export default function Checkout() {
           disabled={loading}
           className="bg-black text-white p-5 font-bold text-lg rounded mb-4 cursor-pointer hover:bg-gray-800 disabled:opacity-50"
         >
-          {loading ? "Weiterleitung..." : "Proceed to Payment"}
+          {loading ? "Redirecting..." : "Proceed to Payment"}
         </button>
       </div>
     </div>

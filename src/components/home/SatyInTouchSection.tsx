@@ -25,7 +25,7 @@ export default function StayInTouchSection() {
       }} />
       <div className="relative z-10 md:px-50 text-center mx-auto px-4 flex flex-col md:flex-row md:items-center md:gap-20">
         <div className="flex-1 px-20 mb-5 md:mb-0 md:w-[30vw]">
-          <h2 className="text-white text-4xl md:text-6xl font-semibold mb-2 text-left">STAY TUNED</h2>
+          <h2 className="text-white text-3xl md:text-6xl font-semibold mb-2 text-left">STAY TUNED</h2>
           <p className="text-gray-200 text-left text-sm md:text-base max-w-md">
             Stay connected. Stay inspired. Join the movement and never miss what's next.
           </p>

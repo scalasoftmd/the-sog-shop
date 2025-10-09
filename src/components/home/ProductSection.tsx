@@ -25,7 +25,7 @@ export default function ProductSection({ title, subtitle, products, showAllHref 
         <div className="overflow-x-auto whitespace-nowrap scroll-smooth md:flex snap-x snap-mandatory">
           {products.map((product, index) => (
             <div key={index} className="inline-block text-center snap-center w-[70vw] mx-2 border border-transparent hover:border-gray-300 transition-all duration-200 pb-6 cursor-pointer">
-              <img src={product.image} alt={product.name} className="w-full object-cover" />
+              <img src={product.image} alt={product.name} className="w-full h-[400px] object-cover" />
               <p className="mt-2 font-bold">{product.name}</p>
               <p className="text-gray-500">{product.price}</p>
             </div>

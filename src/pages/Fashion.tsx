@@ -27,8 +27,10 @@ const Fashion = ({ category }: FashionProps) => {
   const [hasMore, setHasMore] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [currentSort, setCurrentSort] = useState<string>('price-asc');
-  const [currentView, setCurrentView] = useState<'grid' | 'list' | '1' | '2' | '3' | '4' | '5'>('grid');
-  const [itemsPerPage, setItemsPerPage] = useState(9); // Default items per page
+  const [currentView, setCurrentView] = useState<'grid' | 'list' | '1' | '2' | '3' | '4' | '5'>(
+    window.innerWidth >= 768 ? '3' : '1' // Default to '3' (3x3) for desktop and '1' (1x9) for mobile
+  ); 
+  const [itemsPerPage, setItemsPerPage] = useState(window.innerWidth >= 768 ? 9 : 9); // Default items per page: 9 for both views
 
   const fetchProducts = useCallback(async (page: number, itemsPerPage: number) => {
     setIsLoading(true);
@@ -88,9 +90,9 @@ const Fashion = ({ category }: FashionProps) => {
   const handleViewChange = (viewType: 'grid' | 'list' | '1' | '2' | '3' | '4' | '5') => {
     setCurrentView(viewType);
     const itemsPerPageMap: { [key: string]: number } = {
-      '1': 9,
-      '2': 16,
-      '3': 9,
+      '1': 9, // Mobile default: 1x9
+      '2': 8,
+      '3': 9, // Desktop default: 3x3
       '4': 16,
       '5': 25,
     };
@@ -104,6 +106,35 @@ const Fashion = ({ category }: FashionProps) => {
 
   return (
     <div>
+      <div className='md:px-50 md:mt-15 mt-4'>
+      {/* Statement Shirt Section */}
+      <div className="flex flex-col md:flex-row items-center justify-center bg-black text-white">
+        <div className="md:w-1/3">
+          <h2 className="text-2xl font-bold mt-5 md:mt-0 ml-10 mb-5 max-w-[300px]">THE STATEMENT SHIRT</h2>
+          <p className="text-sm leading-relaxed mb-2 px-10">
+            Our best-selling Son of God shirt is more than just a piece of clothing — it's a bold declaration of who you are. 
+            Crafted from premium materials with a focus on comfort and durability, this tee combines timeless design with a powerful message.
+          </p>
+          <p className="text-sm leading-relaxed mb-2 px-10">
+            Every detail is made to reflect quality, from the clean cut to the precise print, so you can wear it confidently in any setting.
+          </p>
+          <p className="text-sm leading-relaxed mb-2 px-10">
+            This shirt is more than fashion; it's a symbol of faith, identity, and courage. Whether you're out on the streets, at an event, 
+            or just living your everyday life, the Son of God Statement Tee reminds you — and the world around you — that creation is waiting 
+            for the sons and daughters of God to rise.
+          </p>
+          {/* <button className="bg-white text-black ml-10 py-2 px-5 mt-2 font-medium">Check it out</button> */}
+        </div>
+        <div className="md:w-2/3 mt-10 md:mt-0">
+          <img 
+            src="/assets/statement-shirt.png" 
+            alt="The Statement Shirt" 
+            className="w-full h-auto object-cover"
+          />
+        </div>
+      </div>
+      </div>
+
       <div className="p-5 md:px-50">
         <div className="mb-6"> {/* Add margin below the filter */}
           <FilterSort
@@ -120,11 +151,11 @@ const Fashion = ({ category }: FashionProps) => {
             <div
               className={`grid gap-5 ${
                 currentView === '1'
-                  ? 'grid-cols-1'
+                  ? 'grid-cols-1' // Mobile default: 1 item per row
                   : currentView === '2'
                   ? 'grid-cols-2'
                   : currentView === '3'
-                  ? 'grid-cols-3'
+                  ? 'grid-cols-3' // Desktop default: 3 items per row
                   : currentView === '4'
                   ? 'grid-cols-4'
                   : currentView === '5'
@@ -182,7 +213,7 @@ const Fashion = ({ category }: FashionProps) => {
         </div>
       </div>
       {/* Features Section */}
-      <div className="flex flex-col md:flex-row justify-center px-20 bg-gray-100 w-full md:grid-cols-4 gap-10 mt-10 mx-auto">
+      <div className="flex flex-col md:flex-row justify-center px-20 bg-gray-100 w-full md:grid-cols-4 gap-10 py-10 mx-auto">
         <div className="flex flex-col md:flex-row justify-center grid-cols-1">
           <div className="text-center py-10 md:p-10 max-w-[400px]">
             <div className="mb-4">
@@ -209,7 +240,7 @@ const Fashion = ({ category }: FashionProps) => {
       </div>
 
       {/* Discover Section */}
-      <div className="flex flex-col items-center justify-center py-20 bg-white">
+      <div className="flex flex-col items-center justify-center pb-20 md:pt-20 bg-white">
           <img 
             src="/assets/discover-sog.png" 
             alt="Discover Sons of God" 

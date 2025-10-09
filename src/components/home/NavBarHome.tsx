@@ -37,14 +37,14 @@ export default function NavBarHome() {
         <span className="block md:inline px-2 md:px-0">
           &nbsp; - Get{" "}
           <span className="font-bold" style={{ fontSize: "inherit" }}>
-            20% OFF
+            15% OFF
           </span>{" "}
           with code{" "}
           <span className="font-bold" style={{ fontSize: "inherit" }}>
             RISE20
           </span>{" "}
           -{" "}
-          <a href="#" className="underline hover:text-yellow-600">
+          <a href="/fashion" className="underline hover:text-yellow-600">
             Shop Now!
           </a>
         </span>
@@ -54,7 +54,7 @@ export default function NavBarHome() {
           <img src="/assets/logo-white.png" alt="Sons of God Logo" className="h-5" />
         </div>
         <nav className="flex items-center gap-8 text-white text-sm">
-          {['Start', 'Fashion', 'Books', 'Events', 'About'].map((item) => (
+          {['Start', 'Fashion', 'About'].map((item) => (
             <Link
               key={item}
               to={item.toLowerCase() === 'start' ? '/' : `/${item.toLowerCase()}`} // Ensure "Start" leads to "/"

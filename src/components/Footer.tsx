@@ -19,16 +19,16 @@ export default function Footer() {
             <FaYoutube className="text-white text-2xl hover:text-gray-400" />
           </div>
         </div> */}
-        <div className="grid grid-cols-1 md:flex md:justify-between md:px-50">
+        <div className="grid grid-cols-1 md:flex md:justify-center md:px-50">
           {[
-            { title: 'FASHION', items: ['Men', 'Women', 'Kids', 'Collections'] },
+            { title: 'FASHION', items: ['Men', 'Women', 'Kids'] },
             // { title: 'MERCHANDISE', items: ['Accessories', 'Home & Living', 'Gifts & Bundles'] },
-            { title: 'BOOKS', items: ['Faith & Inspiration', 'Study & Theology', 'Kids & Youth'] },
+            // { title: 'BOOKS', items: ['Faith & Inspiration', 'Study & Theology', 'Kids & Youth'] },
             // { title: 'TRAINING', items: ['Online Courses', 'Workshops', 'Certifications'] },
-            { title: 'EVENTS', items: ['Upcoming Events', 'Tickets', 'Past Highlights / Media'] },
+            // { title: 'EVENTS', items: ['Upcoming Events', 'Tickets', 'Past Highlights / Media'] },
             { title: 'ABOUT US', items: ['Our Mission', 'The Movement', 'Contact'] },
           ].map((section) => (
-            <div key={section.title} className="md:col-span-1">
+            <div key={section.title} className="md:col-span-1 md:px-20">
               <button
                 className="font-bold mb-4 w-full text-left flex items-center justify-between md:hidden"
                 onClick={() => toggleSection(section.title)}

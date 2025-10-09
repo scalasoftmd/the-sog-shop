@@ -29,7 +29,7 @@ const Bag = () => {
   const subtotal = cartItems.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0);
 
   return (
-    <div className="max-w-7xl mx-auto py-10 px-4 md:px-0">
+    <div className="max-w-7xl mx-auto py-25 px-4 md:px-0">
       <h1 className="text-4xl font-bold mb-8 text-center md:text-left">
         My Bag: {cartItems.length} item{cartItems.length !== 1 ? "s" : ""}
       </h1>

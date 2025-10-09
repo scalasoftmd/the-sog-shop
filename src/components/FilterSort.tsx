@@ -29,12 +29,12 @@ const FilterSort: React.FC<FilterSortProps> = ({
               className="text-sm font-medium px-2 py-1 bg-gray-100"
               onClick={() => setIsSortMenuOpen((prev) => !prev)}
             >
-              Sort by <span>{isSortMenuOpen ? '▲' : '▼'}</span> {/* Reverted */}
+              Sort by <span>{isSortMenuOpen ? '▲' : '▼'}</span>
             </button>
             {isSortMenuOpen && (
               <div
                 className="absolute bg-white shadow-md mt-1"
-                style={{ borderRadius: '0', border: 'none', width: '200px' }} // Increased width
+                style={{ borderRadius: '0', border: 'none', width: '200px' }}
               >
                 <button
                   className="block px-4 py-2 text-left w-full hover:bg-gray-200"
@@ -87,7 +87,7 @@ const FilterSort: React.FC<FilterSortProps> = ({
         </div>
         <div className="flex items-center gap-2">
           <button
-            className={`p-2 ${currentView === '1' ? 'bg-gray-300' : 'bg-white'}`} // Toggle button
+            className="p-2 bg-white" // Default to '1' for mobile
             onClick={() => onViewChange(currentView === '1' ? '2' : '1')} // Toggle between '1' and '2'
           >
             {currentView === '1' ? (
@@ -98,7 +98,9 @@ const FilterSort: React.FC<FilterSortProps> = ({
                 <FaSquare className="w-3 h-3" />
               </span>
             ) : (
-              <FaSquare className="w-6 h-6" />
+              <span className="grid grid-cols-1 gap-1">
+                <FaSquare className="w-6 h-6" />
+              </span>
             )}
           </button>
           <button

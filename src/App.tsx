@@ -15,6 +15,7 @@ import Women from './pages/Fashion/Women';
 import Kids from './pages/Fashion/Kids';
 import NavBar from './components/NavBar';
 import Product from './pages/Product';
+import About from './pages/About';
 
 function AppContent() {
   const location = useLocation();
@@ -35,6 +36,7 @@ function AppContent() {
                 <Route path="/fashion/women" element={<Women />} />
                 <Route path="/fashion/kids" element={<Kids />} />
                 <Route path="/checkout" element={<Checkout />} />
+                <Route path="/about" element={<About />} />
                 <Route path="/bag" element={<Bag />} />
                 <Route path="/order-success" element={<OrderSuccess />} />
                 <Route path="/account" element={<Account />} />

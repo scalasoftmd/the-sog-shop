@@ -144,7 +144,7 @@ app.get("/categories", async (_req: Request, res: Response) => {
 app.get("/variations/men", async (req: Request, res: Response) => {
   try {
     const t = await getToken();
-    const itemsPerPage = parseInt(req.query.itemsPerPage as string) || 9; // Default to 9 if not provided
+    const itemsPerPage = parseInt(req.query.itemsPerPage as string) || 9; // Default to 9 for both desktop and mobile
     const page = parseInt(req.query.page as string) || 1; // Default to page 1 if not provided
     const response = await axios.get(`${PLENTY_URL}/items/variations`, {
       headers: { Authorization: `Bearer ${t}` },
@@ -167,7 +167,7 @@ app.get("/variations/men", async (req: Request, res: Response) => {
 app.get("/variations/women", async (req: Request, res: Response) => {
   try {
     const t = await getToken();
-    const itemsPerPage = parseInt(req.query.itemsPerPage as string) || 9; // Default to 9 if not provided
+    const itemsPerPage = parseInt(req.query.itemsPerPage as string) || 9; // Default to 9 for both desktop and mobile
     const page = parseInt(req.query.page as string) || 1; // Default to page 1 if not provided
     const response = await axios.get(`${PLENTY_URL}/items/variations`, {
       headers: { Authorization: `Bearer ${t}` },
@@ -190,7 +190,7 @@ app.get("/variations/women", async (req: Request, res: Response) => {
 app.get("/variations/kids", async (req: Request, res: Response) => {
   try {
     const t = await getToken();
-    const itemsPerPage = parseInt(req.query.itemsPerPage as string) || 9; // Default to 9 if not provided
+    const itemsPerPage = parseInt(req.query.itemsPerPage as string) || 9; // Default to 9 for both desktop and mobile
     const page = parseInt(req.query.page as string) || 1; // Default to page 1 if not provided
     const response = await axios.get(`${PLENTY_URL}/items/variations`, {
       headers: { Authorization: `Bearer ${t}` },
@@ -201,6 +201,26 @@ app.get("/variations/kids", async (req: Request, res: Response) => {
         isMain: true,
         itemsPerPage,
         page,
+      },
+    });
+    res.json(response.data);
+  } catch (err: any) {
+    console.error(err.response?.data || err.message);
+    res.status(500).json({ error: "Failed to fetch items" });
+  }
+});
+
+app.get("/variations/new", async (req: Request, res: Response) => {
+  try {
+    const t = await getToken();
+    const itemsPerPage = 4; // Default to 4 for new arrivals
+    const response = await axios.get(`${PLENTY_URL}/items/variations`, {
+      headers: { Authorization: `Bearer ${t}` },
+      params: {
+        with: "images,variationSalesPrices,variationCategories,variationAttributeValues,item",
+        lang: "en",
+        isMain: true,
+        itemsPerPage,
       },
     });
     res.json(response.data);
