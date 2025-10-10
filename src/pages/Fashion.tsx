@@ -106,7 +106,7 @@ const Fashion = ({ category }: FashionProps) => {
 
   return (
     <div>
-      <div className='md:px-50 md:mt-15 mt-4'>
+      <div className='md:px-50 md:mt-15 mt-8'>
       {/* Statement Shirt Section */}
       <div className="flex flex-col md:flex-row items-center justify-center bg-black text-white">
         <div className="md:w-1/3">
@@ -127,7 +127,7 @@ const Fashion = ({ category }: FashionProps) => {
         </div>
         <div className="md:w-2/3 mt-10 md:mt-0">
           <img 
-            src="/assets/statement-shirt.png" 
+            src="/assets/statement-shirt.webp" 
             alt="The Statement Shirt" 
             className="w-full h-auto object-cover"
           />
@@ -226,9 +226,9 @@ const Fashion = ({ category }: FashionProps) => {
             <div className="mb-4">
               <FiTruck size={24} className="mx-auto text-gray-400" />
             </div>
-            <h3 className="font-bold text-lg">FREE SHIPPING FROM €100</h3>
-            <p className="text-xs text-gray-500 mt-2">Get free delivery within Germany on all orders over €100.</p> {/* Added mt-2 */}
-          </div>
+              <h3 className="font-bold text-lg">FREE SHIPPING WITHIN GERMANY</h3>
+              <p className="text-xs text-gray-500 mt-2">All prices include VAT plus shipping costs. Free shipping within Germany - excluding islands</p> {/* Added mt-2 */}
+            </div>
           <div className="text-center py-10 md:p-10 max-w-[400px]">
             <div className="mb-4">
               <FiGlobe size={24} className="mx-auto text-gray-400" />
@@ -242,7 +242,7 @@ const Fashion = ({ category }: FashionProps) => {
       {/* Discover Section */}
       <div className="flex flex-col items-center justify-center pb-20 md:pt-20 bg-white">
           <img 
-            src="/assets/discover-sog.png" 
+            src="/assets/discover-sog.webp" 
             alt="Discover Sons of God" 
             className="w-full md:px-50 h-auto object-cover mb-6" 
           />

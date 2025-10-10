@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom';
 export default function CategoryGrid() {
   const navigate = useNavigate();
   const categories = [
-    { name: "Men", image: "/assets/men.jpg", path: "/fashion/men" },
-    { name: "Women", image: "/assets/women.jpg", path: "/fashion/women" },
-    { name: "Kids", image: "/assets/kids.jpg", path: "/fashion/kids" },
+    { name: "Men", image: "/assets/men.webp", path: "/fashion/men" },
+    { name: "Women", image: "/assets/women.webp", path: "/fashion/women" },
+    { name: "Kids", image: "/assets/kids.webp", path: "/fashion/kids" },
   ];
 
   return (

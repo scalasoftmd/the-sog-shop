@@ -2,10 +2,12 @@ import React from 'react';
 import StayInTouchSection from '../components/home/SatyInTouchSection';
 import { FiCreditCard, FiGlobe, FiTruck } from 'react-icons/fi';
 import Loader from '../components/Loader';
+import { Link } from 'react-router-dom';
 
 const About: React.FC = () => {
   const [activeSection, setActiveSection] = React.useState('THE MISSION');
   const [isLoading, setIsLoading] = React.useState(true);
+  const [isVideoModalOpen, setIsVideoModalOpen] = React.useState(false);
 
   React.useEffect(() => {
     // Simulate loading time for page initialization
@@ -31,6 +33,14 @@ const About: React.FC = () => {
     }
   };
 
+  const openVideo = () => {
+    setIsVideoModalOpen(true);
+  };
+
+  const closeVideo = () => {
+    setIsVideoModalOpen(false);
+  };
+
   const navigationSections = [
     { name: 'THE MISSION', id: 'mission-section' },
     { name: 'IMAGEFILM', id: 'imagefilm-section' },
@@ -46,10 +56,10 @@ const About: React.FC = () => {
 
   return (
     <div>
-      <div className="relative mb-12 mt-5">
+      <div className="relative mb-12 mt-8">
         <div className="relative w-full h-auto">
           <img 
-            src="/assets/about-header.png" 
+            src="/assets/about-header.webp" 
             alt="About header" 
             className="w-full h-full object-cover"
           />
@@ -79,44 +89,102 @@ const About: React.FC = () => {
         </div>
 
         <div className="mb-20" id="mission-section">
-          <div className="flex flex-col md:flex-row gap-8 md:gap-16 items-center">
-            <div className="order-2 md:order-1 p-5 md:p-0">
-              <h2 className="text-xl font-bold mb-6 text-left">From Vision to Movement: The Birth of Sons of God</h2>
+          <div className="flex flex-col md:flex-row gap-16 items-center">
+            <div className="order-2 md:order-1 p-7 md:p-0 md:w-1/2">
+              <h2 className="text-xl font-bold mb-6 text-left">BORN FOR MORE. BUILT TO REIGN.</h2>
               <p className="text-gray-700 mb-6 leading-relaxed text-lg">
-                In the heart of Europe, a movement was born — one that carries the sound of transformation and the power of divine purpose. Sons of God (SOG) emerged from a vision to awaken identity, empower leaders, and shape cultures with Kingdom values.
+                SOG (Sons of God) is more than a brand — it is a movement, a calling, and a culture.
+                Rooted in Kingdom identity, SOG exists to awaken sons and daughters of God to live out divine purpose with faith, excellence, and influence in every sphere of life.
               </p>
-              <p className="text-gray-700 mb-6 leading-relaxed text-lg">
-                What began as a spark in the heart of visionary leader Justine Birichi has grown into a global platform uniting believers, entrepreneurs, and creatives under one calling: to manifest the glory of God in every sphere of life.
-              </p>
-              <p className="text-gray-700 mb-6 leading-relaxed text-lg">
-                From conferences and media to leadership training and apparel, every part of SOG reflects one truth — creation is waiting for the sons of God to rise (Romans 8:19).
-              </p>
-              <p className="text-gray-700 mb-8 leading-relaxed text-lg">
-                Our mission is to equip and inspire a generation to lead with purpose, influence with integrity, and bring transformation wherever they are planted.
-              </p>
-              <div className="flex flex-col order-2 md:order-1 md:flex-row items-center gap-8 md:gap-20">
 
-                <img 
-                  src="/assets/founder-signature.png" 
-                  alt="Justine Birichi Signature" 
-                  className=" md:hidden h-15 w-auto"
-                />
+              {/* OUR ORIGIN Section */}
+              <div className="mb-6">
+                <h3 className="text-lg font-bold mb-3">OUR ORIGIN</h3>
+                <p className="text-gray-700 leading-relaxed text-base">
+                  Founded through Kingdom visionaries Justine Birichi and George Weber, SOG was birthed from a shared conviction:
+                </p>
+                <p className="text-gray-700 leading-relaxed text-base italic">
+                  True leadership begins with identity, and transformation starts when sons rise.
+                </p>
+                <p className="text-gray-700 mb-4 leading-relaxed text-base">
+                  From prophetic insight and creative leadership (Justine) to strategic and structural wisdom (George), the SOG story embodies the union of vision and execution, spirit and structure, faith and function — shaping a movement that bridges heaven's values with earth's realities.
+                </p>
+              </div>
 
-                <button className="bg-black text-white px-8 py-3 font-medium hover:bg-gray-800 transition-colors w-fit">
-                  Watch our Story
-                </button>
-                <img 
-                  src="/assets/founder-signature.png" 
-                  alt="Justine Birichi Signature" 
-                  className="hidden md:block h-15 w-auto"
-                />
+              {/* OUR MISSION Section */}
+              <div className="mb-6">
+                <h3 className="text-lg font-bold mb-3">OUR MISSION</h3>
+                <p className="text-gray-700 leading-relaxed text-base">
+                  To raise a generation of Kingdom leaders who:
+                </p>
+                <ul className="text-gray-700 leading-relaxed text-base list-disc list-inside ml-4">
+                  <li>Know who they are in God.</li>
+                  <li>Lead with integrity, excellence, and love.</li>
+                  <li>Influence culture without losing Kingdom character.</li>
+                </ul>
+                <p className="text-gray-700 mb-4 leading-relaxed text-base">
+                  We believe that when identity is restored, authority flows naturally — and when sons stand tall, the world is transformed.
+                </p>
+              </div>
+
+              {/* OUR VALUES Section */}
+              <div className="mb-6">
+                <h3 className="text-lg font-bold mb-3">OUR VALUES</h3>
+                <p className="text-gray-700 leading-relaxed text-base">
+                  Faith. Integrity. Excellence. Empowerment. Impact.
+                  These five pillars form the DNA of everything we build — from content and community to commerce and culture.
+                </p>
+                <p className="text-gray-700 mb-4 leading-relaxed text-base">
+                  They reflect our commitment to create with purpose, lead with grace, and live with eternal significance.
+                </p>
+              </div>
+
+              {/* OUR COLLECTIVE Section */}
+              <div className="mb-8">
+                <h3 className="text-lg font-bold mb-3">OUR COLLECTIVE</h3>
+                <p className="text-gray-700 leading-relaxed text-base">
+                  SOG is stewarded by a growing community of creatives, entrepreneurs, and leaders who share one heart — to represent the King authentically in every domain of influence.
+                </p>
+                <p className="text-gray-700 leading-relaxed text-base">
+                  It's not about one person or platform; it's about a generation rising together.
+                </p>
+                <p className="text-gray-700 mb-8 leading-relaxed text-base italic">
+                  "We are sons. We rise. We reign — not for dominance, but for service."
+                </p>
               </div>
             </div>
-            <img 
-              src="/assets/founder.png" 
-              alt="Justine Birichi" 
-              className="h-80 md:h-140 w-auto order-1 md:order-2"
-            />
+            
+            <div className="order-1 md:order-2 flex flex-col items-center md:w-1/2">
+              <img 
+                src="/assets/founder.png" 
+                alt="Justine Birichi" 
+                className="h-80 md:h-180 w-auto mb-6"
+              />
+              
+              <div className="flex flex-col items-center gap-4 md:gap-8">
+                <h3 className="text-lg font-bold text-center">MEET THE VISIONARY</h3>
+                <div className='flex flex-col md:flex-row gap-4'>
+                  <img 
+                    src="/assets/founder-signature.png" 
+                    alt="Justine Birichi Signature" 
+                    className="h-15 w-auto"
+                  />
+
+                  <img 
+                    src="/assets/founder-signature.webp" 
+                    alt="Justine Birichi Signature" 
+                    className="h-15 w-auto"
+                  />
+
+                </div>
+                <button 
+                  onClick={() => scrollToSection('timeline-section', 'IMAGEFILM')}
+                  className="bg-black text-white px-8 py-3 font-medium hover:bg-gray-800 transition-colors w-fit cursor-pointer"
+                >
+                  Watch our Story
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -130,7 +198,9 @@ const About: React.FC = () => {
               />
               <h3 className="text-xl font-bold mb-3">Faith in Action</h3>
               <p className="text-gray-700 text-sm leading-relaxed">
-                The message of Sons of God goes beyond pulpits — it's a lifestyle of purpose and transformation. What began at prayer rooms and small gatherings has grown into a movement that touches every sphere of life. Through coaching, leadership, and community, SOG inspires believers to embrace new faith levels and guidance on every project, initiative, and product carries a message of hope and identity — reflecting Kingdom values in real-world culture.
+                The message of SOG is expressed not only in words but in lifestyle and excellence.
+                Through apparel, design, media, and leadership initiatives, SOG carries a prophetic yet practical call to live with purpose, integrity, and influence.
+                Each project reflects the same heartbeat: to raise a generation who knows who they are in God — and walks in that truth boldly.
               </p>
             </div>
 
@@ -142,7 +212,9 @@ const About: React.FC = () => {
               />
               <h3 className="text-xl font-bold mb-3">Transforming Leadership</h3>
               <p className="text-gray-700 text-sm leading-relaxed">
-                True transformation begins within. In The Leader's SHIFT, Justine Birichi guides readers through the nine journey steps every leader must take — from managing people to embracing purpose. Drawing from decades of experience in leadership, faith, and culture, he shares how mindset, values, and spiritual maturity shape authentic influence. This book is a blueprint for leaders ready to move beyond performance.
+                At its core, SOG is a leadership culture — one that believes identity is the foundation of true authority.
+                We exist to raise Kingdom-minded leaders who influence culture without losing Kingdom character.
+                Through teaching, mentorship, and creative collaboration, we are building a global community of authentic leaders.
               </p>
             </div>
 
@@ -152,9 +224,10 @@ const About: React.FC = () => {
                 alt="Navigating Change" 
                 className="w-full h-64 object-cover mb-4"
               />
-              <h3 className="text-xl font-bold mb-3">Navigating Change, Culture & Calling</h3>
+              <h3 className="text-xl font-bold mb-3">Navigating Change. Cultivating Calling.</h3>
               <p className="text-gray-700 text-sm leading-relaxed">
-                Change is inevitable — but transformation is intentional. In The SHIFT, Justine Birichi explores the dynamics of transition across life, business, and faith. Through real-world stories and global insights, he shares wisdom to embrace change as a catalyst for growth and renewal. Whether you're leading a company, a community, or your own journey of faith, The SHIFT offers timeless principles to help you align vision, courage, and destiny in a rapidly changing world.
+                In an ever-shifting world, SOG stands as a reminder that faith is not passive — it's prophetic.
+                We help leaders and believers alike to discern the times, align with God's purpose, and live courageously in their calling.
               </p>
             </div>
           </div>
@@ -170,66 +243,120 @@ const About: React.FC = () => {
               />
               <h3 className="text-xl font-bold mb-3">Expanding Influence</h3>
               <p className="text-gray-700 text-sm leading-relaxed">
-                Since its foundation, Sons of God has continued to grow from a vision into a global movement. What began with a message of transformation has expanded into conferences, media, education, and literature — all carrying the same heartbeat: to make faith visible in every sphere of life. Through continuous innovation and partnerships, SOG reaches between diverse continents while staying rooted in Kingdom values and divine purpose-driven excellence.
+                SOG continues to grow its reach through partnerships, media initiatives, and creative expressions.
+                From design studios to leadership forums, the vision remains the same: to represent the King with authenticity and grace.
               </p>
             </div>
 
             <div className="text-left">
               <img 
                 src="/assets/media-mentorship.png" 
-                alt="Media and Mentorship" 
+                alt="Media and Ministry" 
                 className="w-full h-64 object-cover mb-4"
               />
-              <h3 className="text-xl font-bold mb-3">Media and Mentorship</h3>
+              <h3 className="text-xl font-bold mb-3">Media and Ministry</h3>
               <p className="text-gray-700 text-sm leading-relaxed">
-                At the core of SOG lies the power of communication. Through films, podcasts, and leadership sessions, Justine Birichi and his team share stories that inspire transformation. Each program connects hearts to purpose, equipping seekers, entrepreneurs, and creatives to influence their world with wisdom and grace. From local gatherings to digital platforms, SOG's media serves as a tool to catalyze the next generation called to rise.
+                Through the Portmedia ecosystem, SOG is extending its impact into new spaces — connecting Kingdom identity with creativity, storytelling, and global influence.
               </p>
             </div>
 
             <div className="text-left">
               <img 
                 src="/assets/bible-studies.png" 
-                alt="Bible Studies" 
+                alt="Shift thoughts for Everyday Life" 
                 className="w-full h-64 object-cover mb-4"
               />
-              <h3 className="text-xl font-bold mb-3">Bible Studies for Everyday Life</h3>
+              <h3 className="text-xl font-bold mb-3">Shift thoughts for Everyday Life</h3>
               <p className="text-gray-700 text-sm leading-relaxed">
-                Faith grows when it meets understanding. Through Bible Studies and teaching resources, SOG helps believers explore their knowledge of Scripture and apply truth in practical ways. Designed for both individual and groups, these studies bridge theology and daily living — empowering people to walk in wisdom, strengthen their faith, and live out God's purpose wherever they are. Each session inspires deeper reflection, conversation, and a renewed passion.
+                Faith must be lived, not only spoken. Our devotionals, studies, and live sessions bring Scripture into practical application — helping believers live with wisdom, purpose, and consistency in every area of life.
               </p>
             </div>
           </div>
         </div>
       </div>
 
-        <div className="md:px-70 mb-16 bg-gray-50 p-5 md:p-8" id="imagefilm-section">
-          <div className="mb-6 flex flex-col md:flex-row md:justify-between md:items-center">
-            <span className="text-lg md:text-xl mb-4 md:mb-0">Experience the Vision <span className="text-gray-500">- The Story Behind Sons of God</span></span>
-            <button className="hidden bg-black text-white px-4 py-2 text-sm w-fit md:ml-4">
-              Discover More Stories
+        <div className="md:px-70 mb-16 bg-gray-50 p-0 md:p-8" id="imagefilm-section">
+          <div className="mb-6 flex flex-col md:flex-row md:justify-between items-center md:items-center">
+            <span className="text-md md:text-xl mb-4 md:mb-0 text-center md:text-left">Experience the Vision <span className="text-gray-500">- The Story Behind Sons of God</span></span>
+            <button className="bg-black text-white px-4 py-2 text-sm w-fit md:ml-4">
+              <Link to="https://www.youtube.com/@leadershipforum-eu">Discover More Stories</Link>
             </button>
           </div>
           <div className="flex flex-col md:flex-row gap-8 md:gap-12 items-center">
-            <div className="flex-1">
-              <img 
-                src="/assets/podcast-bible-image.png" 
-                alt="Bible and Podcast" 
+            <div className="flex-1 relative">
+              <video 
                 className="w-full h-64 md:h-80 object-cover"
-              />
+                poster="/assets/podcast-bible-image.png"
+                preload="metadata"
+                muted
+              >
+                <source src="/assets/video.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+              
+              <button
+                onClick={openVideo}
+                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center group z-10 cursor-pointer"
+                style={{outline: 'none'}}
+              >
+                <span className="flex items-center justify-center w-16 h-16 md:w-24 md:h-24 rounded-full border-2 border-white bg-black bg-opacity-30 hover:bg-opacity-60 transition">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="md:w-8 md:h-8">
+                    <polygon points="9,6 21,12 9,18" fill="white" />
+                  </svg>
+                </span>
+              </button>
             </div>
-            <div className="flex-1">
+            <div className="flex-1 p-5">
               <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">A Glimpse into the Heart of Sons of God</h2>
               <p className="text-gray-700 leading-relaxed text-sm md:text-base">
-                In this powerful podcast episode, visionary leader Justine Birichi unfolds the message behind Sons of God — the heartbeat of the Sons of God movement.
-              </p>
-              <p className="text-gray-700 leading-relaxed mt-4 text-sm md:text-base">
-                He shares how creation itself is in expectation to see, to reveal purpose, identity, and divine strength in a world longing for light.
-              </p>
-              <p className="text-gray-700 leading-relaxed mt-4 text-sm md:text-base">
-                Join this inspiring conversation as Justine unpacks the story behind the vision — from faith, wisdom, and culture converge to awaken a movement that carries the sound of Heaven into every sphere of life.
+                A glimpse into the heart of the movement that began as revelation and has become a lifestyle of identity, excellence, and faith.
               </p>
             </div>
           </div>
         </div>
+
+        {/* Video Modal */}
+        {isVideoModalOpen && (
+          <div className="fixed h-full inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+            <div className="absolute w-full max-w-4xl mx-4">
+              <button
+                onClick={closeVideo}
+                className="absolute cursor-pointer -top-12 right-0 text-white hover:text-gray-300 z-100 p-2"
+                aria-label="Close video"
+              >
+                <svg 
+                  width="24" 
+                  height="24" 
+                  viewBox="0 0 24 24" 
+                  fill="none" 
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-6 h-6"
+                >
+                  <path 
+                    d="M18 6L6 18M6 6L18 18" 
+                    stroke="currentColor" 
+                    strokeWidth="2" 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
+              <video
+                className="w-full h-[70vh] md:h-[80vh]"
+                controls
+                autoPlay
+                playsInline
+                poster="/assets/podcast-bible-image.png"
+                onError={(e) => console.error('Video error:', e)}
+                onCanPlay={() => console.log('Video can play')}
+                onLoadStart={() => console.log('Video load started')}
+              >
+                <source src="/assets/video.mp4" type="video/mp4" />
+                <p>Your browser does not support the video tag or the video file could not be loaded.</p>
+              </video>
+            </div>
+          </div>
+        )}
 
         <div className="bg-black text-white py-16 px-8 relative" id="timeline-section">
           {/* Background HISTORY text */}
@@ -239,7 +366,7 @@ const About: React.FC = () => {
           
           <div className="max-w-6xl mx-auto relative z-10">
             <div className="text-start mb-16">
-              <h3 className="text-white mb-4">Story - <span className="text-gray-400">The Journey of Justine Birichi</span></h3>
+              <h3 className="text-white mb-4">History - <span className="text-gray-400">The Journey of Justine Birichi (JB)</span></h3>
             </div>
             
             {/* Desktop Timeline */}
@@ -256,9 +383,9 @@ const About: React.FC = () => {
                   </div>
                   <div className="w-4 h-4 bg-white rounded-full relative z-10"></div>
                   <div className="w-1/2 pl-8">
-                    <h3 className="text-3xl font-bold mb-6">1998 - 2002</h3>
-                    <h4 className="text-2xl mb-6">Beginning on the Field</h4>
-                    <p className="text-lg text-gray-300">Justine Birichi's journey began on the football fields of Africa, where his passion for the game shaped his character and revealed his natural leadership abilities. These formative years instilled values of teamwork, perseverance, and relentless pursuit, qualities that would later become the foundation of his ministry.</p>
+                    <h3 className="text-3xl font-bold mb-6">1996 - 2002</h3>
+                    <h4 className="text-2xl mb-6">Beginnings on the Field</h4>
+                    <p className="text-lg text-gray-300">A journey that started through sports and leadership, shaping discipline and vision.</p>
                   </div>
                 </div>
 
@@ -270,8 +397,8 @@ const About: React.FC = () => {
                   <div className="w-4 h-4 bg-white rounded-full relative z-10"></div>
                   <div className="w-1/2 pl-8">
                     <h3 className="text-3xl font-bold mb-6">2002</h3>
-                    <h4 className="text-2xl mb-6">Answering the Altar Boys Initiative</h4>
-                    <p className="text-lg text-gray-300">During his teenage years, Justine responded to a calling that would redirect his life's trajectory. Embracing faith as a guiding force, he became actively involved in church activities and youth leadership, developing his skills in communication, discipleship, and spiritual guidance that would define his future calling.</p>
+                    <h4 className="text-2xl mb-6">Founding the Peace Boys Initiative</h4>
+                    <p className="text-lg text-gray-300">Raising hope through youth programs that blended sport, purpose, and mentorship.</p>
                   </div>
                 </div>
 
@@ -284,7 +411,7 @@ const About: React.FC = () => {
                   <div className="w-1/2 pl-8">
                     <h3 className="text-3xl font-bold mb-6">2004 - 2006</h3>
                     <h4 className="text-2xl mb-6">A Calling Beyond Sport</h4>
-                    <p className="text-lg text-gray-300">Justine's path evolved into ministry as he recognized a deeper calling beyond athletic achievement. During this period, he immersed himself in theological study and practical ministry, developing foundational leadership skills and spiritual maturity that would later define his approach to faith-based transformation.</p>
+                    <p className="text-lg text-gray-300">Transitioning into leadership and ministry, igniting passion for transformation and faith-driven leadership.</p>
                   </div>
                 </div>
 
@@ -297,7 +424,7 @@ const About: React.FC = () => {
                   <div className="w-1/2 pl-8">
                     <h3 className="text-3xl font-bold mb-6">2007 - 2009</h3>
                     <h4 className="text-2xl mb-6">Leadership Through Sport</h4>
-                    <p className="text-lg text-gray-300">In these transformative years, Justine discovered how to integrate his passion for sports with his calling to minister. He began organizing sport-based youth programs, using athletics as a platform for character development, leadership training, and spiritual growth among young people in his community.</p>
+                    <p className="text-lg text-gray-300">Launching programs and clubs that influenced communities and created safe spaces for youth to thrive.</p>
                   </div>
                 </div>
 
@@ -309,8 +436,8 @@ const About: React.FC = () => {
                   <div className="w-4 h-4 bg-white rounded-full relative z-10"></div>
                   <div className="w-1/2 pl-8">
                     <h3 className="text-3xl font-bold mb-6">2010 - 2016</h3>
-                    <h4 className="text-2xl mb-6">Corporate Consulting & Multicultural Leadership</h4>
-                    <p className="text-lg text-gray-300">Justine's leadership expanded into the corporate world, where he became a sought-after consultant and speaker. Working across different cultures and industries, he developed expertise in cross-cultural communication, organizational development, and leadership transformation that would later influence his global ministry approach.</p>
+                    <h4 className="text-2xl mb-6">Expanding through Consulting & Marketplace Leadership</h4>
+                    <p className="text-lg text-gray-300">Shaping leaders and organizations across Africa and Europe through values-based consulting and mentorship.</p>
                   </div>
                 </div>
 
@@ -322,8 +449,8 @@ const About: React.FC = () => {
                   <div className="w-4 h-4 bg-white rounded-full relative z-10"></div>
                   <div className="w-1/2 pl-8">
                     <h3 className="text-3xl font-bold mb-6">2017 - 2020</h3>
-                    <h4 className="text-2xl mb-6">Expanding Influence Across Europe</h4>
-                    <p className="text-lg text-gray-300">Building on years of experience, Justine expanded his influence throughout Europe. During this period, he established key partnerships, launched international conferences, and began developing the systematic approaches to leadership and spiritual development that would become hallmarks of the Sons of God movement.</p>
+                    <h4 className="text-2xl mb-6">Expanding Influence Across Continents</h4>
+                    <p className="text-lg text-gray-300">Collaborating with ministries and leadership organizations globally, establishing the groundwork for a cross-cultural Kingdom movement.</p>
                   </div>
                 </div>
 
@@ -335,8 +462,8 @@ const About: React.FC = () => {
                   <div className="w-4 h-4 bg-white rounded-full relative z-10"></div>
                   <div className="w-1/2 pl-8">
                     <h3 className="text-3xl font-bold mb-6">2020 - Present</h3>
-                    <h4 className="text-2xl mb-6">SOG Visionary Leader at Powerhouse International</h4>
-                    <p className="text-lg text-gray-300">Today, Justine serves as the visionary leader of Sons of God and Powerhouse International, a global movement that spans continents and cultures. Through conferences, media, literature, and mentorship, he continues to equip and inspire a generation of leaders to embrace their divine purpose and transform their communities with Kingdom values.</p>
+                    <h4 className="text-2xl mb-6">CEO & Visionary Leader at PM International</h4>
+                    <p className="text-lg text-gray-300">Merging faith, media, and business under one mission: to awaken identity and purpose through Kingdom excellence.</p>
                   </div>
                 </div>
               </div>
@@ -354,9 +481,9 @@ const About: React.FC = () => {
                   <div className="w-4 h-4 bg-white rounded-full relative z-10 mt-2 flex-shrink-0" style={{ marginLeft: '-6px', marginRight: '24px' }}></div>
                   <div className="flex-1">
                     <img src="/assets/1998-2002.png" alt="1998-2002" className="w-full h-48 object-cover mb-4 border-4 border-white" />
-                    <h3 className="text-xl font-bold mb-3">1998 - 2002</h3>
-                    <h4 className="text-lg mb-3">Beginning on the Field</h4>
-                    <p className="text-sm text-gray-300">Justine Birichi's journey began on the football fields of Africa, where his passion for the game shaped his character and revealed his natural leadership abilities. These formative years instilled values of teamwork, perseverance, and relentless pursuit, qualities that would later become the foundation of his ministry.</p>
+                    <h3 className="text-xl font-bold mb-3">1996 - 2002</h3>
+                    <h4 className="text-lg mb-3">Beginnings on the Field</h4>
+                    <p className="text-sm text-gray-300">A journey that started through sports and leadership, shaping discipline and vision.</p>
                   </div>
                 </div>
 
@@ -366,8 +493,8 @@ const About: React.FC = () => {
                   <div className="flex-1">
                     <img src="/assets/2002.png" alt="2002" className="w-full h-48 object-cover mb-4 border-4 border-white" />
                     <h3 className="text-xl font-bold mb-3">2002</h3>
-                    <h4 className="text-lg mb-3">Answering the Altar Boys Initiative</h4>
-                    <p className="text-sm text-gray-300">During his teenage years, Justine responded to a calling that would redirect his life's trajectory. Embracing faith as a guiding force, he became actively involved in church activities and youth leadership, developing his skills in communication, discipleship, and spiritual guidance that would define his future calling.</p>
+                    <h4 className="text-lg mb-3">Founding the Peace Boys Initiative</h4>
+                    <p className="text-sm text-gray-300">Raising hope through youth programs that blended sport, purpose, and mentorship.</p>
                   </div>
                 </div>
 
@@ -378,7 +505,7 @@ const About: React.FC = () => {
                     <img src="/assets/2004-2006.png" alt="2004-2006" className="w-full h-48 object-cover mb-4 border-4 border-white" />
                     <h3 className="text-xl font-bold mb-3">2004 - 2006</h3>
                     <h4 className="text-lg mb-3">A Calling Beyond Sport</h4>
-                    <p className="text-sm text-gray-300">Justine's path evolved into ministry as he recognized a deeper calling beyond athletic achievement. During this period, he immersed himself in theological study and practical ministry, developing foundational leadership skills and spiritual maturity that would later define his approach to faith-based transformation.</p>
+                    <p className="text-sm text-gray-300">Transitioning into leadership and ministry, igniting passion for transformation and faith-driven leadership.</p>
                   </div>
                 </div>
 
@@ -389,7 +516,7 @@ const About: React.FC = () => {
                     <img src="/assets/2007-2009.png" alt="2007-2009" className="w-full h-48 object-cover mb-4 border-4 border-white" />
                     <h3 className="text-xl font-bold mb-3">2007 - 2009</h3>
                     <h4 className="text-lg mb-3">Leadership Through Sport</h4>
-                    <p className="text-sm text-gray-300">In these transformative years, Justine discovered how to integrate his passion for sports with his calling to minister. He began organizing sport-based youth programs, using athletics as a platform for character development, leadership training, and spiritual growth among young people in his community.</p>
+                    <p className="text-sm text-gray-300">Launching programs and clubs that influenced communities and created safe spaces for youth to thrive.</p>
                   </div>
                 </div>
 
@@ -399,8 +526,8 @@ const About: React.FC = () => {
                   <div className="flex-1">
                     <img src="/assets/2010-2016.png" alt="2010-2016" className="w-full h-48 object-cover mb-4 border-4 border-white" />
                     <h3 className="text-xl font-bold mb-3">2010 - 2016</h3>
-                    <h4 className="text-lg mb-3">Corporate Consulting & Multicultural Leadership</h4>
-                    <p className="text-sm text-gray-300">Justine's leadership expanded into the corporate world, where he became a sought-after consultant and speaker. Working across different cultures and industries, he developed expertise in cross-cultural communication, organizational development, and leadership transformation that would later influence his global ministry approach.</p>
+                    <h4 className="text-lg mb-3">Expanding through Consulting & Marketplace Leadership</h4>
+                    <p className="text-sm text-gray-300">Shaping leaders and organizations across Africa and Europe through values-based consulting and mentorship.</p>
                   </div>
                 </div>
 
@@ -410,8 +537,8 @@ const About: React.FC = () => {
                   <div className="flex-1">
                     <img src="/assets/2017-2020.png" alt="2017-2020" className="w-full h-48 object-cover mb-4 border-4 border-white" />
                     <h3 className="text-xl font-bold mb-3">2017 - 2020</h3>
-                    <h4 className="text-lg mb-3">Expanding Influence Across Europe</h4>
-                    <p className="text-sm text-gray-300">Building on years of experience, Justine expanded his influence throughout Europe. During this period, he established key partnerships, launched international conferences, and began developing the systematic approaches to leadership and spiritual development that would become hallmarks of the Sons of God movement.</p>
+                    <h4 className="text-lg mb-3">Expanding Influence Across Continents</h4>
+                    <p className="text-sm text-gray-300">Collaborating with ministries and leadership organizations globally, establishing the groundwork for a cross-cultural Kingdom movement.</p>
                   </div>
                 </div>
 
@@ -421,17 +548,17 @@ const About: React.FC = () => {
                   <div className="flex-1">
                     <img src="/assets/2020-present.png" alt="2020-Present" className="w-full h-48 object-cover mb-4 border-4 border-white" />
                     <h3 className="text-xl font-bold mb-3">2020 - Present</h3>
-                    <h4 className="text-lg mb-3">SOG Visionary Leader at Powerhouse International</h4>
-                    <p className="text-sm text-gray-300">Today, Justine serves as the visionary leader of Sons of God and Powerhouse International, a global movement that spans continents and cultures. Through conferences, media, literature, and mentorship, he continues to equip and inspire a generation of leaders to embrace their divine purpose and transform their communities with Kingdom values.</p>
+                    <h4 className="text-lg mb-3">CEO & Visionary Leader at PM International</h4>
+                    <p className="text-sm text-gray-300">Merging faith, media, and business under one mission: to awaken identity and purpose through Kingdom excellence.</p>
                   </div>
                 </div>
               </div>
             </div>
 
             <div className="text-center mt-20 mb-16 relative">
-              <button className="bg-white text-black px-8 py-4 font-medium hover:bg-gray-100 transition-colors">
+              {/* <button className="bg-white text-black px-8 py-4 font-medium hover:bg-gray-100 transition-colors">
                 Be Part of the Movement
-              </button>
+              </button> */}
               <div className="mt-8">
                 <p className="text-white text-lg leading-relaxed">The journey continues — inspiring a generation to rise,</p>
                 <p className="text-white text-lg leading-relaxed">lead with purpose, and shape a world that reflects Kingdom values.</p>
@@ -507,9 +634,11 @@ const About: React.FC = () => {
                   className="w-full h-100 object-cover mb-4"
                 />
                 <div className="p-6">
-                  <h3 className="text-xl font-bold mb-3">Events & Conferences</h3>
+                  <h3 className="text-xl font-bold mb-3">Events & Initiatives</h3>
                   <p className="text-gray-700 text-sm leading-relaxed">
-                    Every conference, summit, and gathering brings one goal — to awaken purpose and ignite transformation. From leadership summits to worship nights, our events unite believers across cultures and generations. Experience powerful moments that strengthen faith and shape the future.
+                    •	Events/Tours & Conferences: Gathering believers and leaders to experience transformation together.
+                  <br></br>  •	Training & Workshops: Practical equipping for Kingdom leadership and creative influence.
+                  <br></br>  •	Join the Movement: Be part of a global community of sons rising in every sphere.
                   </p>
                 </div>
               </div>
@@ -553,9 +682,7 @@ const About: React.FC = () => {
               <div className="text-left mb-16">
                 <h2 className="text-2xl mb-4">Meet the Visionary — <span className="text-gray-500">The Man Behind the Movement</span></h2>
                 <p className="text-gray-700 leading-relaxed max-w-4xl">
-                  From the football fields of Africa to the boardrooms of Europe — Justine Birichi's story is one of faith, leadership, and transformation. 
-                  As the visionary behind Sons of God and CEO of Portmetals International GmbH, he continues to bridge business, culture, and purpose to 
-                  inspire leaders worldwide.
+                  From the football fields of Africa to the boardrooms of Europe, Justine Birichi’s journey is one of faith, leadership, and transformation. As the visionary behind Sons of God, together with his partner George and a passionate team, he continues to bridge business, culture, and purpose — inspiring a new generation of leaders to rise with identity, excellence, and impact. Rooted in a shared Kingdom vision through PortMedia, this movement reflects more than a brand — it’s a calling to reveal heaven’s design in everyday life and leadership.
                 </p>
               </div>
 
@@ -585,12 +712,12 @@ const About: React.FC = () => {
                     className="w-full h-80 object-cover"
                   />
                   <div className="bg-gray-100 p-6 flex-1 flex flex-col">
-                    <h3 className="text-xl font-bold mb-4">Portmetals International GmbH</h3>
+                    <h3 className="text-xl font-bold mb-4">Portmedia GmbH</h3>
                     <p className="text-gray-700 text-sm leading-relaxed mb-6 flex-1">
                       As CEO and Managing Director, Justine spearheads a platform that unites global trade, leadership, innovation, and media ventures. His work in business and ministry integrates Kingdom values into the marketplace — creating lasting transformation in business and society.
                     </p>
                     <button className="text-black underline font-medium">
-                      Discover PM International
+                      <Link to="/portmedia">Discover Portmedia</Link>
                     </button>
                   </div>
                 </div>
@@ -612,20 +739,13 @@ const About: React.FC = () => {
                   </div>
                 </div>
               </div>
-
-              {/* Join the Journey Button */}
-              <div className="text-center">
-                <button className="bg-white text-black border border-gray-300 px-8 py-3 font-medium hover:bg-gray-50 transition-colors cursor-pointer">
-                  Join the Journey
-                </button>
-              </div>
             </div>
           </div>
 
         {/* From Fantasy to Faith Section */}
         <div className="bg-gray-50 py-16 px-8">
           <div className="max-w-6xl mx-auto">
-            <p className="text-gray-500 text-md mb-8">From Fantasy to Faith - Live Experience</p>
+            <p className="text-gray-500 text-md mb-8">Leadership forum - Live Experience</p>
             
             {/* Desktop Layout */}
             <div className="hidden md:flex gap-12 items-center bg-black">
@@ -711,10 +831,9 @@ const About: React.FC = () => {
                   placeholder="Your Church / Ministry"
                   className="w-90 px-4 py-3 border border-gray-300 focus:outline-none focus:border-black mb-4"
                 />
-                <h2 className="text-3xl font-bold mb-6">Could Your Church or Ministry Be a Fit for Sons of God?</h2>
+                <h2 className="text-3xl font-bold mb-6">Be Part of a Global Move of Sons Rising in Purpose.</h2>
                 <p className="text-gray-700 leading-relaxed mb-8">
-                  Or reach out directly to <span className="font-bold cursor-pointer">marketing@the-sog-shop.com</span> — we'd love to hear how 
-                  your church, ministry, or event could align with the Sons of God movement.
+                  We’re connecting Kingdom-minded churches, ministries, and believers who long to see heaven’s culture revealed on earth. Let’s unite for transformation and lasting impact.
                 </p>
                 <div className="flex gap-4">
                   <input 
@@ -744,10 +863,9 @@ const About: React.FC = () => {
                   placeholder="Your Church / Ministry"
                   className="w-full px-4 py-3 border border-gray-300 focus:outline-none focus:border-black mb-4"
                 />
-                <h2 className="text-xl font-bold mb-4">Could Your Church or Ministry Be a Fit for Sons of God?</h2>
+                <h2 className="text-xl font-bold mb-4">Be Part of a Global Move of Sons Rising in Purpose.</h2>
                 <p className="text-gray-700 leading-relaxed mb-6 text-sm">
-                  Or reach out directly to <span className="font-bold cursor-pointer">marketing@the-sog-shop.com</span> — we'd love to hear how 
-                  your church, ministry, or event could align with the Sons of God movement.
+                  We’re connecting Kingdom-minded churches, ministries, and believers who long to see heaven’s culture revealed on earth. Let’s unite for transformation and lasting impact.
                 </p>
                 <div className="flex flex-col gap-3">
                   <input 
@@ -778,8 +896,8 @@ const About: React.FC = () => {
                     <div className="mb-4">
                       <FiTruck size={24} className="mx-auto text-gray-400" />
                     </div>
-                    <h3 className="font-bold text-lg">FREE SHIPPING FROM €100</h3>
-                    <p className="text-xs text-gray-500 mt-2">Get free delivery within Germany on all orders over €100.</p> {/* Added mt-2 */}
+                    <h3 className="font-bold text-lg">FREE SHIPPING WITHIN GERMANY</h3>
+                    <p className="text-xs text-gray-500 mt-2">All prices include VAT plus shipping costs. Free shipping within Germany - excluding islands</p> {/* Added mt-2 */}
                   </div>
                   <div className="text-center py-10 md:p-10 max-w-[400px]">
                     <div className="mb-4">
@@ -794,7 +912,7 @@ const About: React.FC = () => {
               {/* Discover Section */}
               <div className="flex flex-col items-center justify-center pb-20 md:pt-20 bg-white">
                   <img 
-                    src="/assets/discover-sog.png" 
+                    src="/assets/discover-sog.webp" 
                     alt="Discover Sons of God" 
                     className="w-full md:px-50 h-auto object-cover mb-6" 
                   />

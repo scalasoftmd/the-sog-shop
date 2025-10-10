@@ -166,7 +166,7 @@ export default function Product() {
       <div className="hidden md:block relative w-full h-120 bg-gray-200 overflow-hidden mt-5">
         {/* Background image */}
         <img 
-          src="/assets/hero-woman.png" 
+          src="/assets/hero-woman.webp" 
           alt="Woman in black shirt" 
           className="absolute inset-0 w-full h-full object-cover"
         />
@@ -342,6 +342,27 @@ export default function Product() {
             ADD TO BAG
           </button>
         </div>
+      </div>
+
+            {/* Newsletter Section */}
+      <div className="bg-gray-100 p-10 md:px-50 text-center">
+        <h2 className="text-2xl font-bold mb-4">Newsletter</h2>
+        <p className="text-gray-700 text-sm mb-6">
+          Enjoy €10 off your next order and benefit from our news and offers.
+        </p>
+        <div className="flex justify-center items-center gap-4">
+          <input
+            type="email"
+            placeholder="Your email address"
+            className="hover:none focus:outline-none bg-white px-4 py-2 w-full max-w-md"
+          />
+          <button className="min-w-[120px] bg-black text-white px-6 py-2 border-none">Sign Up</button>
+        </div>
+        <p className="text-gray-500 text-xs mt-4">
+          By signing up, you agree that your data will be used for our newsletter distribution. 
+          The newsletter can be unsubscribed at any time. Further information and cancellation 
+          instructions can be found in our <a href="/privacy-policy" className="underline">Privacy Policy</a>.
+        </p>
       </div>
     </div>
   );

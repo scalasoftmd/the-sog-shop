@@ -118,7 +118,7 @@ export default function Home() {
       {/* HeroSection */}
       <section className="hero md:mt-0 mt-20 relative w-full h-[92vh] bg-gray-100 text-center pt-16 mb-20">
         <img
-          src="/assets/hero.png"
+          src="/assets/hero.webp"
           alt="Hero Background"
           className="absolute inset-0 w-full h-full object-cover brightness-60"
         />
@@ -141,13 +141,13 @@ export default function Home() {
 
           <div className="flex flex-col sm:flex-row items-center justify-center bg-black text-white p-4 w-full sm:w-[80%] absolute bottom-0 left-1/2 transform -translate-x-1/2 h-24 sm:h-24">
             <div className="flex items-center justify-center gap-4 sm:gap-8 mx-auto">
-              <Link to="https://facebook.com" target="_blank" rel="noopener noreferrer">
-                <i className="fab fa-facebook-f h-3 w-3 sm:h-4 sm:w-4 text-white hover:text-yellow-400"></i>
+              <Link to="https://open.spotify.com/episode/7jxb7CnCFlPECEwfSwrUQj?si=l97dQeioT-ytIFqA7B6DVQ" target="_blank" rel="noopener noreferrer">
+                <i className="fab fa-spotify h-3 w-3 sm:h-4 sm:w-4 text-white hover:text-yellow-400"></i>
               </Link>
-              <Link to="https://instagram.com" target="_blank" rel="noopener noreferrer">
-                <i className="fab fa-instagram h-3 w-3 sm:h-4 sm:w-4 text-white hover:text-yellow-400"></i>
+              <Link to="https://www.tiktok.com/@leadership.forum" target="_blank" rel="noopener noreferrer">
+                <i className="fab fa-tiktok h-3 w-3 sm:h-4 sm:w-4 text-white hover:text-yellow-400"></i>
               </Link>
-              <Link to="https://youtube.com" target="_blank" rel="noopener noreferrer">
+              <Link to="https://www.youtube.com/@leadershipforum-eu" target="_blank" rel="noopener noreferrer">
                 <i className="fab fa-youtube h-3 w-3 sm:h-4 sm:w-4 text-white hover:text-yellow-400"></i>
               </Link>
             </div>
@@ -201,7 +201,7 @@ export default function Home() {
             </div>
             <div className="relative w-full mt-20 mb-20 md:h-auto h-[80vw] md:h-[45vw]">
               <img src="/assets/about.jpg" alt="About us" className="w-full h-full object-cover object-left" />
-              <button
+              {/* <button
                 // onClick={openVideo}
                 className="absolute top-15 right-15 flex flex-col items-center group z-10 cursor-pointer"
                 style={{outline: 'none'}}
@@ -213,7 +213,7 @@ export default function Home() {
                   </svg>
                 </span>
                 <span className="mt-2 text-white text-xl"><b>play</b> <span className="font-normal">video</span></span>
-              </button>
+              </button> */}
               {showVideo && (
                 <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
                   <div className="relative w-[90%] h-[90%] bg-black rounded-lg shadow-lg flex items-center justify-center">
@@ -241,7 +241,7 @@ export default function Home() {
       </section>
 
       {/* Features Section */}
-      <div className="flex flex-col md:flex-row justify-center px-20 bg-gray-100 w-full md:grid-cols-4 gap-10 py-10 mx-auto">
+      <div className="flex flex-col md:flex-row justify-center px-20 bg-gray-100 w-full md:grid-cols-4 gap-10 mb-20 py-10 mx-auto">
         <div className="flex flex-col md:flex-row justify-center grid-cols-1">
           <div className="text-center py-10 md:p-10 max-w-[400px]">
             <div className="mb-4">
@@ -254,9 +254,9 @@ export default function Home() {
             <div className="mb-4">
               <FiTruck size={24} className="mx-auto text-gray-400" />
             </div>
-            <h3 className="font-bold text-lg">FREE SHIPPING FROM €100</h3>
-            <p className="text-xs text-gray-500 mt-2">Get free delivery within Germany on all orders over €100.</p> {/* Added mt-2 */}
-          </div>
+              <h3 className="font-bold text-lg">FREE SHIPPING WITHIN GERMANY</h3>
+              <p className="text-xs text-gray-500 mt-2">All prices include VAT plus shipping costs. Free shipping within Germany - excluding islands</p> {/* Added mt-2 */}
+            </div>
           <div className="text-center py-10 md:p-10 max-w-[400px]">
             <div className="mb-4">
               <FiGlobe size={24} className="mx-auto text-gray-400" />
@@ -268,9 +268,9 @@ export default function Home() {
       </div>
 
       {/* Discover Section */}
-      <div className="flex flex-col items-center justify-center pb-20 md:pt-20 bg-white">
+      <div className="flex flex-col items-center justify-center pb-20 bg-white">
           <img 
-            src="/assets/discover-sog.png" 
+            src="/assets/discover-sog.webp" 
             alt="Discover Sons of God" 
             className="w-full md:px-50 h-auto object-cover mb-6" 
           />
