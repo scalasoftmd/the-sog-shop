@@ -26,8 +26,8 @@ const ProductItem: React.FC<ProductItemProps> = ({ name, price, photo }) => {
         loading="lazy" // Lazy loading
         onLoad={() => setIsImageLoaded(true)}
       />
-      <h5 className="font-semibold mb-1 text-gray-900 text-center text-lg">{name}</h5>
-      <p className="text-gray-600 mb-4 text-center text-base">EUR {price.toLocaleString()}</p>
+      <h5 className="font-bold mb-1 text-gray-900 text-center text-xl">{name}</h5>
+      <p className="text-black mb-4 text-center text-base">{price.toLocaleString()} €</p>
     </div>
   );
 };

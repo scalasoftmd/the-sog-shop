@@ -17,11 +17,12 @@ app.use(express.json());
 const PLENTY_URL = process.env.PLENTY_URL!;
 const PLENTY_USER = process.env.PLENTY_USER!;
 const PLENTY_PASS = process.env.PLENTY_PASS!;
-const MOLLIE_TEST_API_KEY = process.env.MOLLIE_TEST_API_KEY!;
+// const MOLLIE_TEST_API_KEY = process.env.MOLLIE_TEST_API_KEY!;
+const MOLLIE_API_KEY = process.env.MOLLIE_API_KEY!;
 const BASE_URL = process.env.BASE_URL!;
 // const JWT_SECRET = process.env.JWT_SECRET!;
 
-const mollie = Mollie({ apiKey: MOLLIE_TEST_API_KEY });
+const mollie = Mollie({ apiKey: MOLLIE_API_KEY });
 
 let token: string = "";
 let tokenExpiresAt = 0;
@@ -287,8 +288,6 @@ app.post("/create-payment", async (req: Request, res: Response) => {
 
     const t = await getToken();
 
-    console.log("Creating order with items:", orderItems, "billing:", billing, "delivery:", delivery);
-
     // ----------------- CREATE GUEST CONTACT -----------------
     const contactRes = await axios.post(
       `${PLENTY_URL}/accounts/contacts`,
@@ -316,8 +315,6 @@ app.post("/create-payment", async (req: Request, res: Response) => {
     );
     const contactId = contactRes.data.id;
 
-    console.log("Created guest contact ID:", contactId);
-
     // ----------------- CREATE BILLING ADDRESS -----------------
     const billingRes = await axios.post(
       `${PLENTY_URL}/accounts/contacts/${contactId}/addresses`,
@@ -325,8 +322,6 @@ app.post("/create-payment", async (req: Request, res: Response) => {
       { headers: { Authorization: `Bearer ${t}` } }
     );
     const billingId = billingRes.data.id;
-
-    console.log("Created billing address ID:", billingId);
 
     // ----------------- CREATE DELIVERY ADDRESS -----------------
     let deliveryId = billingId;
@@ -338,8 +333,6 @@ app.post("/create-payment", async (req: Request, res: Response) => {
       );
       deliveryId = deliveryRes.data.id;
     }
-
-    console.log("Using delivery address ID:", deliveryId);
 
     // ----------------- CREATE ORDER -----------------
     const orderRes = await axios.post(

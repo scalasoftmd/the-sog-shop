@@ -1,9 +1,20 @@
 import React from 'react';
 import StayInTouchSection from '../components/home/SatyInTouchSection';
 import { FiCreditCard, FiGlobe, FiTruck } from 'react-icons/fi';
+import Loader from '../components/Loader';
 
 const About: React.FC = () => {
   const [activeSection, setActiveSection] = React.useState('THE MISSION');
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    // Simulate loading time for page initialization
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 800);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const scrollToSection = (sectionId: string, buttonName: string) => {
     setActiveSection(buttonName);
@@ -28,6 +39,10 @@ const About: React.FC = () => {
     { name: 'PARTNER', id: 'partner-section' },
     { name: 'CONTACT', id: 'contact-section' }
   ];
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <div>

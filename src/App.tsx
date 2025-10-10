@@ -38,7 +38,7 @@ function AppContent() {
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/bag" element={<Bag />} />
-                <Route path="/order-success" element={<OrderSuccess />} />
+                <Route path="/success" element={<OrderSuccess />} />
                 <Route path="/account" element={<Account />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />

@@ -37,7 +37,7 @@ export default function Navbar() {
         </span>
         <span className="block md:inline px-2 md:px-0">
           &nbsp; - Get{" "}
-          <span className="font-bold">20% OFF</span>{" "}
+          <span className="font-bold">15% OFF</span>{" "}
           with code{" "}
           <span className="font-bold">RISE20</span>{" "}
           -{" "}

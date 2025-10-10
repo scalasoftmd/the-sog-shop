@@ -3,6 +3,7 @@ import { PlentyCountry } from "../models/enums/PlentyCountry";
 
 interface CartItem {
   id: number;
+  itemId: number;
   name: string;
   image: string;
   price: number;
@@ -14,8 +15,8 @@ interface CartItem {
 }
 
 interface OrderItem {
-  itemId: number;
-  variationId?: number;
+  referrerId?: number;
+  itemVariationId: number;
   typeId?: number;
   quantity: number;
   amounts: {
@@ -124,8 +125,8 @@ export default function Checkout() {
   const buildOrderItems = (): OrderItem[] => {
     return cartItems.map((item) => ({
       typeId: 4, // product line item
-      itemId: item.id,
-      variationId: item.variationId,
+      itemVariationId: item.id,
+      referrerId: item.itemId,
       quantity: item.quantity,
       amounts: [
         {
