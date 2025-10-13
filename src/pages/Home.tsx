@@ -10,10 +10,11 @@ import NavBar from '../components/NavBar';
 import NavBarHome from '../components/home/NavBarHome';
 import { FiCreditCard, FiGlobe, FiTruck } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
-import ProductSection from '../components/home/ProductSection';
+// import ProductSection from '../components/home/ProductSection';
 import Loader from '../components/Loader';
+import Newsletter from '../components/Newsletter';
 
-const apiUrl = import.meta.env.VITE_API_URL;
+// const apiUrl = import.meta.env.VITE_API_URL;
 
 export default function Home() {
   const [showNavBar, setShowNavBar] = useState(false);
@@ -21,8 +22,8 @@ export default function Home() {
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 768);
   
   // ProductSections state
-  const [newArrivals, setNewArrivals] = useState([]);
-  const [kidsProducts, setKidsProducts] = useState([]);
+  // const [newArrivals, setNewArrivals] = useState([]);
+  // const [kidsProducts, setKidsProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   
   // AboutSection state
@@ -66,27 +67,27 @@ export default function Home() {
       setIsLoading(true);
       try {
         // Fetch New Arrivals (Men)
-        const menRes = await fetch(`${apiUrl}/variations/new`);
-        const menData = await menRes.json();
-        const menMapped = (menData.entries || []).map((product: any) => ({
-          id: product.item.id,
-          image: product.images?.[0]?.url,
-          name: product?.name || "Product Name",
-          price: "EUR " + (product.variationSalesPrices?.[0]?.price || "0.00"),
-        }));
+        // const menRes = await fetch(`${apiUrl}/variations/new`);
+        // const menData = await menRes.json();
+        // const menMapped = (menData.entries || []).map((product: any) => ({
+        //   id: product.item.id,
+        //   image: product.images?.[0]?.url,
+        //   name: product?.name || "Product Name",
+        //   price: "EUR " + (product.variationSalesPrices?.[0]?.price || "0.00"),
+        // }));
 
-        // Fetch Kids Products
-        const kidsRes = await fetch(`${apiUrl}/variations/kids?itemsPerPage=4`);
-        const kidsData = await kidsRes.json();
-        const kidsMapped = (kidsData.entries || []).map((product: any) => ({
-          id: product.item.id,
-          image: product.images?.[0]?.url,
-          name: product.name || "Product Name",
-          price: "EUR " + (product.variationSalesPrices?.[0]?.price || "0.00"),
-        }));
+        // // Fetch Kids Products
+        // const kidsRes = await fetch(`${apiUrl}/variations/kids?itemsPerPage=4`);
+        // const kidsData = await kidsRes.json();
+        // const kidsMapped = (kidsData.entries || []).map((product: any) => ({
+        //   id: product.item.id,
+        //   image: product.images?.[0]?.url,
+        //   name: product.name || "Product Name",
+        //   price: "EUR " + (product.variationSalesPrices?.[0]?.price || "0.00"),
+        // }));
 
-        setNewArrivals(menMapped);
-        setKidsProducts(kidsMapped);
+        // setNewArrivals(menMapped);
+        // setKidsProducts(kidsMapped);
       } catch (err) {
         console.error("Error fetching products:", err);
       }
@@ -139,7 +140,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center bg-black text-white p-4 w-full sm:w-[80%] absolute bottom-0 left-1/2 transform -translate-x-1/2 h-24 sm:h-24">
+          <div className="flex flex-col sm:flex-row items-center justify-center bg-black text-white w-full sm:w-[80%] absolute bottom-0 left-1/2 transform -translate-x-1/2 h-14">
             <div className="flex items-center justify-center gap-4 sm:gap-8 mx-auto">
               <Link to="https://open.spotify.com/episode/7jxb7CnCFlPECEwfSwrUQj?si=l97dQeioT-ytIFqA7B6DVQ" target="_blank" rel="noopener noreferrer">
                 <i className="fab fa-spotify h-3 w-3 sm:h-4 sm:w-4 text-white hover:text-yellow-400"></i>
@@ -154,10 +155,8 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* ProductSections */}
       <div>
-        <ProductSection
+        {/* <ProductSection
           title="New Arrivals"
           subtitle="elevate your style"
           showAllHref="/fashion"
@@ -169,7 +168,7 @@ export default function Home() {
           subtitle="the next Generation"
           showAllHref="/fashion/kids"
           products={isLoading ? Array(4).fill({}) : kidsProducts}
-        />
+        /> */}
       </div>
 
       <img
@@ -179,10 +178,10 @@ export default function Home() {
       />
 
       {/* AboutSection */}
-      <section className="about-section mx-full pt-25 sm:p-8 md:pl-40 md:pr-40 md:pt-10">
+      <section className="about-section mx-full pt-25 md:pl-40 md:pr-40 md:pt-10">
         <div className="container mx-full">
           <div className="flex flex-col justify-center md:flex-row items-center gap-10">
-              <div>
+              <div className='w-full flex flex-col md:w-1/2 pl-15 pr-15 pb-0 sm:p-5 md:p-10 lg:p-20'>
                   <div className="w-30 border-t border-gray-700 mb-10"></div>
                   <h3 className="text-3xl sm:text-4xl md:text-7xl font-semibold mb-4 leading-none">The world is <br /> waiting for the <br /> sons and <br /> daughters of God <br /> to rise. We are <br /> here to make faith <br /> visible.</h3>
               </div>
@@ -241,7 +240,7 @@ export default function Home() {
       </section>
 
       {/* Features Section */}
-      <div className="flex flex-col md:flex-row justify-center px-20 bg-gray-100 w-full md:grid-cols-4 gap-10 mb-20 py-10 mx-auto">
+      <div className="flex flex-col md:flex-row justify-center px-20 bg-gray-100 w-full md:grid-cols-4 gap-10 mb-20 mt-20 py-10 mx-auto">
         <div className="flex flex-col md:flex-row justify-center grid-cols-1">
           <div className="text-center py-10 md:p-10 max-w-[400px]">
             <div className="mb-4">
@@ -268,60 +267,27 @@ export default function Home() {
       </div>
 
       {/* Discover Section */}
-      <div className="flex flex-col items-center justify-center pb-20 bg-white">
+      <div className="flex flex-col items-center justify-center pb-20 md:pt-20 bg-white">
           <img 
             src="/assets/discover-sog.webp" 
             alt="Discover Sons of God" 
             className="w-full md:px-50 h-auto object-cover mb-6" 
           />
         <div className="w-full px-10 md:px-50">
-          <h2 className="text-3xl font-bold mb-6 text-left mt-15">DISCOVER THE WORLD OF SONS OF GOD</h2>
+          <h2 className="text-3xl font-bold mb-6 text-left mt-15">THE MOVEMENT CONTINUES</h2>
+          <p className="text-gray-500 text-base leading-relaxed text-left mb-8">
+            Through the Portmedia ecosystem, SOG extends its reach across media, design, leadership, and cultural innovation — inspiring people everywhere to live with purpose, create with excellence, and build with eternity in mind.
+          </p>
+          
+          <h2 className="text-3xl font-bold mb-6 text-left">DISCOVER THE WORLD OF SOG</h2>
           <p className="text-gray-500 text-base leading-relaxed text-left">
-            The Sons of God website is more than an online store — it is a platform created to inspire, equip, and connect believers. 
-            Here you will find a wide range of categories that reflect every aspect of Christian life. In the Fashion section, explore 
-            premium clothing designed to combine style with a powerful message, so that what you wear becomes a visible statement of your identity.
-          </p>
-          <p className="text-gray-500 text-base leading-relaxed text-left mt-4">
-            The Merchandise and Home & Living areas offer products that bring faith into your daily surroundings, from meaningful accessories 
-            to inspiring décor for your home.
-          </p>
-          <p className="text-gray-500 text-base leading-relaxed text-left mt-4">
-            For those who want to go deeper, our Books section provides resources for faith, study, and inspiration — from theology to practical 
-            guides and material for the next generation. In Training, you can access online courses, workshops, and certifications designed to 
-            strengthen leadership, faith, and practical living.
-          </p>
-          <p className="text-gray-500 text-base leading-relaxed text-left mt-4">
-            The Events area keeps you updated about upcoming gatherings, where you can experience community, worship, and teaching live, and even 
-            purchase your tickets directly online.
-          </p>
-          <p className="text-gray-500 text-base leading-relaxed text-left mt-4">
-            At Sons of God, everything is connected through our mission, rooted in Romans 8:19: creation is waiting for the sons and daughters of 
-            God to be revealed. This site is your place to discover, to grow, and to make your faith visible in everyday life — through what you 
-            wear, what you read, and how you live.
+            Explore our collections, stories, and resources designed to help you live your faith with excellence and style.
           </p>
         </div>
       </div>
 
       {/* Newsletter Section */}
-      <div className="bg-gray-100 p-10 md:px-50 text-center">
-        <h2 className="text-2xl font-bold mb-4">Newsletter</h2>
-        <p className="text-gray-700 text-sm mb-6">
-          Enjoy €10 off your next order and benefit from our news and offers.
-        </p>
-        <div className="flex justify-center items-center gap-4">
-          <input
-            type="email"
-            placeholder="Your email address"
-            className="hover:none focus:outline-none bg-white px-4 py-2 w-full max-w-md"
-          />
-          <button className="min-w-[120px] bg-black text-white px-6 py-2 border-none">Sign Up</button>
-        </div>
-        <p className="text-gray-500 text-xs mt-4">
-          By signing up, you agree that your data will be used for our newsletter distribution. 
-          The newsletter can be unsubscribed at any time. Further information and cancellation 
-          instructions can be found in our <a href="/privacy-policy" className="underline">Privacy Policy</a>.
-        </p>
-      </div>
+      <Newsletter />
     </div>
   );
 }

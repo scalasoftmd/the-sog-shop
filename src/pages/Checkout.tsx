@@ -123,6 +123,9 @@ export default function Checkout() {
   }, []);
 
   const buildOrderItems = (): OrderItem[] => {
+
+    console.log("Building order items from cart:", cartItems);
+
     return cartItems.map((item) => ({
       typeId: 4, // product line item
       itemVariationId: item.id,

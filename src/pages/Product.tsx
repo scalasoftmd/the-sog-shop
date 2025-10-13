@@ -344,7 +344,7 @@ export default function Product() {
         </div>
       </div>
 
-            {/* Newsletter Section */}
+      {/* Newsletter Section */}
       <div className="bg-gray-100 p-10 md:px-50 text-center">
         <h2 className="text-2xl font-bold mb-4">Newsletter</h2>
         <p className="text-gray-700 text-sm mb-6">

@@ -5,6 +5,8 @@ import cors from "cors";
 import * as dotenv from "dotenv";
 import Mollie from "@mollie/api-client";
 // import jwt from "jsonwebtoken";
+import { Resend } from 'resend';
+
 
 // Load .env
 dotenv.config();
@@ -350,6 +352,18 @@ app.post("/create-payment", async (req: Request, res: Response) => {
       { headers: { Authorization: `Bearer ${t}` } }
     );
 
+
+    const resend = new Resend('re_7X3Q57NZ_NqLW6NeKAzs4vR8D8MpwWX7P');
+
+    console.log('Billing email:', billing.email);
+
+    resend.emails.send({
+      from: 'webmaster@the-sog.de',
+      to: billing.email,
+      subject: 'Hello World',
+      html: '<p>Congrats on sending your <strong>first email</strong>!</p>'
+    });
+
     const plentyOrderId = orderRes.data.id;
 
     var totalAmount = 0;
@@ -402,6 +416,48 @@ app.post("/mollie-webhook", async (req, res) => {
   } catch (err) {
     console.error("Webhook error:", err);
     res.sendStatus(500);
+  }
+});
+
+app.post("/subscribe", async (req: Request, res: Response) => {
+  try {
+    const { email, firstName, lastName } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ error: "Email is required" });
+    }
+
+    const t = await getToken();
+
+    // Create newsletter subscriber contact
+    const contactRes = await axios.post(
+      `${PLENTY_URL}/accounts/contacts`,
+      {
+        referrerId: 0,
+        typeId: 2,            // guest
+        firstName: firstName || "",
+        lastName: lastName || "",
+        options: [
+          {
+            typeId: 2,
+            subTypeId: 1,
+            value: email,
+            priority: 1
+          }
+        ]
+      },
+      { headers: { Authorization: `Bearer ${t}` } }
+    );
+
+    return res.json({ 
+      success: true, 
+      message: "Successfully subscribed to newsletter",
+      contactId: contactRes.data.id 
+    });
+
+  } catch (err: any) {
+    console.error("Newsletter subscription error:", err.response?.data || err.message);
+    return res.status(500).json({ error: "Failed to subscribe to newsletter" });
   }
 });
 
