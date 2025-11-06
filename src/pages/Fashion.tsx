@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { FiChevronLeft, FiChevronRight, FiCreditCard, FiTruck, FiGlobe } from 'react-icons/fi'; // Added icons for features
 import ProductItem from '../components/ProductItem';
 import Loader from '../components/Loader';
-import FilterSort from '../components/FilterSort';
+// import FilterSort from '../components/FilterSort';
 
 interface ProductImage {
   publicUrl: string;
@@ -26,11 +26,12 @@ const Fashion = ({ category }: FashionProps) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const [currentSort, setCurrentSort] = useState<string>('price-asc');
-  const [currentView, setCurrentView] = useState<'grid' | 'list' | '1' | '2' | '3' | '4' | '5'>(
-    window.innerWidth >= 768 ? '3' : '1' // Default to '3' (3x3) for desktop and '1' (1x9) for mobile
-  ); 
-  const [itemsPerPage, setItemsPerPage] = useState(window.innerWidth >= 768 ? 9 : 9); // Default items per page: 9 for both views
+  const [totalPages, setTotalPages] = useState(0);
+  // const [currentSort, setCurrentSort] = useState<string>('price-asc');
+  // const [currentView, setCurrentView] = useState<'grid' | 'list' | '1' | '2' | '3' | '4' | '5'>(
+  //   window.innerWidth >= 768 ? '3' : '1' // Default to '3' (3x3) for desktop and '1' (1x9) for mobile
+  // ); 
+  const [itemsPerPage] = useState(window.innerWidth >= 768 ? 9 : 9); // Default items per page: 9 for both views
 
   const fetchProducts = useCallback(async (page: number, itemsPerPage: number) => {
     setIsLoading(true);
@@ -38,6 +39,12 @@ const Fashion = ({ category }: FashionProps) => {
       const endpoint = category ? `/variations/${category}` : '/variations';
       const res = await fetch(`${apiUrl}${endpoint}?page=${page}&itemsPerPage=${itemsPerPage}`);
       const data = await res.json();
+      
+      // Debug log to see what we're getting
+      console.log('API Response:', data);
+      console.log('Total Pages:', data.totalsPages);
+      console.log('Total Count:', data.totalsCount);
+      
       const mappedProducts: Product[] = (data.entries || []).map((variation: any) => {
         if (!variation.isMain || !variation.item) return null;
         const item = variation.item;
@@ -58,9 +65,14 @@ const Fashion = ({ category }: FashionProps) => {
 
       setProducts(mappedProducts);
       setHasMore(!data.isLastPage && mappedProducts.length > 0);
+      // Ensure we always have at least 1 page if there are products
+      const calculatedPages = data.totalsPages || (mappedProducts.length > 0 ? Math.ceil(mappedProducts.length / itemsPerPage) : 0);
+      setTotalPages(calculatedPages);
+      console.log('Setting totalPages to:', calculatedPages);
     } catch (err) {
       console.error('Error fetching products:', err);
       setHasMore(false);
+      setTotalPages(0);
     }
     setIsLoading(false);
   }, [category]);
@@ -77,27 +89,27 @@ const Fashion = ({ category }: FashionProps) => {
     fetchProducts(currentPage, itemsPerPage);
   }, [currentPage, itemsPerPage, fetchProducts]);
 
-  const handleFilterChange = (filterType: string, value: string) => {
-    console.log(`Filter changed: ${filterType} = ${value}`);
-    // Update state or fetch products based on filter
-  };
+  // const handleFilterChange = (filterType: string, value: string) => {
+  //   console.log(`Filter changed: ${filterType} = ${value}`);
+  //   // Update state or fetch products based on filter
+  // };
 
-  const handleSortChange = (value: string) => {
-    setCurrentSort(value);
-    // Update sorting logic
-  };
+  // const handleSortChange = (value: string) => {
+  //   setCurrentSort(value);
+  //   // Update sorting logic
+  // };
 
-  const handleViewChange = (viewType: 'grid' | 'list' | '1' | '2' | '3' | '4' | '5') => {
-    setCurrentView(viewType);
-    const itemsPerPageMap: { [key: string]: number } = {
-      '1': 9, // Mobile default: 1x9
-      '2': 8,
-      '3': 9, // Desktop default: 3x3
-      '4': 16,
-      '5': 25,
-    };
-    setItemsPerPage(itemsPerPageMap[viewType] || 9); // Default to 9 if viewType is not mapped
-  };
+  // const handleViewChange = (viewType: 'grid' | 'list' | '1' | '2' | '3' | '4' | '5') => {
+  //   setCurrentView(viewType);
+  //   const itemsPerPageMap: { [key: string]: number } = {
+  //     '1': 9, // Mobile default: 1x9
+  //     '2': 8,
+  //     '3': 9, // Desktop default: 3x3
+  //     '4': 16,
+  //     '5': 25,
+  //   };
+  //   setItemsPerPage(itemsPerPageMap[viewType] || 9); // Default to 9 if viewType is not mapped
+  // };
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page); // Update the current page
@@ -136,7 +148,7 @@ const Fashion = ({ category }: FashionProps) => {
       </div>
 
       <div className="p-5 md:px-50">
-        <div className="mb-6"> {/* Add margin below the filter */}
+        {/* <div className="mb-6">
           <FilterSort
             onFilterChange={handleFilterChange}
             onSortChange={handleSortChange}
@@ -144,24 +156,25 @@ const Fashion = ({ category }: FashionProps) => {
             currentSort={currentSort}
             currentView={currentView}
           />
-        </div>
+        </div> */}
         <div className="flex flex-col md:flex-row gap-10">
           {/* Products Grid */}
           <main className="w-full">
             <div
-              className={`grid gap-5 ${
-                currentView === '1'
-                  ? 'grid-cols-1' // Mobile default: 1 item per row
-                  : currentView === '2'
-                  ? 'grid-cols-2'
-                  : currentView === '3'
-                  ? 'grid-cols-3' // Desktop default: 3 items per row
-                  : currentView === '4'
-                  ? 'grid-cols-4'
-                  : currentView === '5'
-                  ? 'grid-cols-5'
-                  : 'grid-cols-2 md:grid-cols-3'
-              }`}
+              className="grid gap-5 grid-cols-1 md:grid-cols-3"
+              // className={`grid gap-5 ${
+              //   currentView === '1'
+              //     ? 'grid-cols-1' // Mobile default: 1 item per row
+              //     : currentView === '2'
+              //     ? 'grid-cols-2'
+              //     : currentView === '3'
+              //     ? 'grid-cols-3' // Desktop default: 3 items per row
+              //     : currentView === '4'
+              //     ? 'grid-cols-4'
+              //     : currentView === '5'
+              //     ? 'grid-cols-5'
+              //     : 'grid-cols-2 md:grid-cols-3'
+              // }`}
             >
               {products.map((product: any) => (
                 <div
@@ -181,36 +194,45 @@ const Fashion = ({ category }: FashionProps) => {
             {isLoading && <Loader />}
           </main>
         </div>
-        <div className="flex justify-center items-center gap-1 mt-6 py-20">
-          {/* Pagination */}
-          <button
-            disabled={currentPage === 1}
-            onClick={() => handlePageChange(currentPage - 1)}
-            className="flex items-center justify-center px-4 py-2 bg-gray-200 text-gray-700 disabled:bg-gray-300 disabled:text-gray-500 cursor-pointer"
-          >
-            <FiChevronLeft className="mr-2" /> Back
-          </button>
-          {[...Array(window.innerWidth >= 768 ? 10 : 5)].map((_, index) => ( // 10 pages for desktop, 5 for mobile
+        {products.length > 0 && (
+          <div className="flex justify-center items-center gap-1 mt-6 py-20">
+            {/* Pagination */}
             <button
-              key={index}
-              onClick={() => handlePageChange(index + 1)}
-              className={`px-4 py-2 cursor-pointer ${
-                currentPage === index + 1
-                  ? 'bg-black text-white'
-                  : 'bg-transparent text-black hover:bg-gray-100'
-              }`}
+              disabled={currentPage === 1}
+              onClick={() => handlePageChange(currentPage - 1)}
+              className="flex items-center justify-center px-4 py-2 bg-gray-200 text-gray-700 disabled:bg-gray-300 disabled:text-gray-500 cursor-pointer"
             >
-              {index + 1}
+              <FiChevronLeft className="mr-2" /> Back
             </button>
-          ))}
-          <button
-            disabled={!hasMore}
-            onClick={() => handlePageChange(currentPage + 1)}
-            className="flex items-center justify-center px-4 py-2 bg-gray-200 text-gray-700 disabled:bg-gray-300 disabled:text-gray-500 cursor-pointer"
-          >
-            Next <FiChevronRight className="ml-2" />
-          </button>
-        </div>
+            {totalPages > 0 && [...Array(Math.min(totalPages, window.innerWidth >= 768 ? 10 : 5))].map((_, index) => (
+              <button
+                key={index}
+                onClick={() => handlePageChange(index + 1)}
+                className={`px-4 py-2 cursor-pointer ${
+                  currentPage === index + 1
+                    ? 'bg-black text-white'
+                    : 'bg-transparent text-black hover:bg-gray-100'
+                }`}
+              >
+                {index + 1}
+              </button>
+            ))}
+            {totalPages === 0 && (
+              <button
+                className="px-4 py-2 bg-black text-white cursor-pointer"
+              >
+                1
+              </button>
+            )}
+            <button
+              disabled={!hasMore || currentPage >= totalPages}
+              onClick={() => handlePageChange(currentPage + 1)}
+              className="flex items-center justify-center px-4 py-2 bg-gray-200 text-gray-700 disabled:bg-gray-300 disabled:text-gray-500 cursor-pointer"
+            >
+              Next <FiChevronRight className="ml-2" />
+            </button>
+          </div>
+        )}
       </div>
       {/* Features Section */}
       <div className="flex flex-col md:flex-row justify-center px-20 bg-gray-100 w-full md:grid-cols-4 gap-10 py-10 mx-auto">

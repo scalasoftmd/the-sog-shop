@@ -1,35 +1,28 @@
 import '@fortawesome/fontawesome-free/css/all.css';
-// import HeroSection from '../components/home/HeroSection';
-// import ProductSections from '../components/home/ProductSections';
-// import AboutSection from '../components/home/AboutSection';
-// import StayInTouchSection from '../components/home/SatyInTouchSection';
-// import ProductSection2 from '../components/home/ProductSection-2';
-// import BooksProductSections from '../components/home/BooksProductSections';
 import { useState, useEffect } from 'react';
 import NavBar from '../components/NavBar';
 import NavBarHome from '../components/home/NavBarHome';
 import { FiCreditCard, FiGlobe, FiTruck } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
-// import ProductSection from '../components/home/ProductSection';
 import Loader from '../components/Loader';
 import Newsletter from '../components/Newsletter';
+import ProductSection from '../components/home/ProductSection';
 
-// const apiUrl = import.meta.env.VITE_API_URL;
+const apiUrl = import.meta.env.VITE_API_URL;
 
 export default function Home() {
   const [showNavBar, setShowNavBar] = useState(false);
   const [navBarClass, setNavBarClass] = useState('opacity-0 -translate-y-full');
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 768);
-  
-  // ProductSections state
-  // const [newArrivals, setNewArrivals] = useState([]);
+
+  const [newArrivals, setNewArrivals] = useState([]);
   // const [kidsProducts, setKidsProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [productsError, setProductsError] = useState(false);
   
   // AboutSection state
   const [showVideo, setShowVideo] = useState(false);
 
-  // const openVideo = () => setShowVideo(true);
   const closeVideo = () => setShowVideo(false);
 
   useEffect(() => {
@@ -65,16 +58,17 @@ export default function Home() {
   useEffect(() => {
     const fetchProducts = async () => {
       setIsLoading(true);
+      setProductsError(false);
       try {
         // Fetch New Arrivals (Men)
-        // const menRes = await fetch(`${apiUrl}/variations/new`);
-        // const menData = await menRes.json();
-        // const menMapped = (menData.entries || []).map((product: any) => ({
-        //   id: product.item.id,
-        //   image: product.images?.[0]?.url,
-        //   name: product?.name || "Product Name",
-        //   price: "EUR " + (product.variationSalesPrices?.[0]?.price || "0.00"),
-        // }));
+        const menRes = await fetch(`${apiUrl}/variations/new`);
+        const menData = await menRes.json();
+        const menMapped = (menData.entries || []).map((product: any) => ({
+          id: product.item.id,
+          image: product.images?.[0]?.url,
+          name: product?.name || "Product Name",
+          price: "EUR " + (product.variationSalesPrices?.[0]?.price || "0.00"),
+        }));
 
         // // Fetch Kids Products
         // const kidsRes = await fetch(`${apiUrl}/variations/kids?itemsPerPage=4`);
@@ -86,10 +80,11 @@ export default function Home() {
         //   price: "EUR " + (product.variationSalesPrices?.[0]?.price || "0.00"),
         // }));
 
-        // setNewArrivals(menMapped);
+        setNewArrivals(menMapped);
         // setKidsProducts(kidsMapped);
       } catch (err) {
         console.error("Error fetching products:", err);
+        setProductsError(true);
       }
       setIsLoading(false);
     };
@@ -117,7 +112,7 @@ export default function Home() {
       )}
 
       {/* HeroSection */}
-      <section className="hero md:mt-0 mt-20 relative w-full h-[92vh] bg-gray-100 text-center pt-16 mb-20">
+      <section className="hero md:mt-0 mt-10 relative w-full h-[92vh] bg-gray-100 text-center pt-16 mb-20">
         <img
           src="/assets/hero.webp"
           alt="Hero Background"
@@ -155,21 +150,27 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <div>
-        {/* <ProductSection
-          title="New Arrivals"
-          subtitle="elevate your style"
-          showAllHref="/fashion"
-          products={isLoading ? Array(4).fill({}) : newArrivals}
-        />
+      {!productsError && (newArrivals.length > 0 || isLoading) && (
+        <div>
+          {(newArrivals.length > 0 || isLoading) && (
+            <ProductSection
+              title="New Arrivals"
+              subtitle="elevate your style"
+              showAllHref="/fashion"
+              products={isLoading ? Array(4).fill({}) : newArrivals}
+            />
+          )}
 
-        <ProductSection
-          title="Kids"
-          subtitle="the next Generation"
-          showAllHref="/fashion/kids"
-          products={isLoading ? Array(4).fill({}) : kidsProducts}
-        /> */}
-      </div>
+          {/* {(kidsProducts.length > 0 || isLoading) && (
+            <ProductSection
+              title="Kids"
+              subtitle="the next Generation"
+              showAllHref="/fashion/kids"
+              products={isLoading ? Array(4).fill({}) : kidsProducts}
+            />
+          )} */}
+        </div>
+      )}
 
       <img
         src="/assets/wear-what-you-believe.png"

@@ -65,7 +65,10 @@ export default function Product() {
         let sizeArr: string[] = [];
         let colorArr: any[] = [];
         if (Array.isArray(attrsData.entries)) {
-          const sizeAttr = attrsData.entries.find((a: any) => a.backendName.toLowerCase() === "size");
+          // Check for both regular size and kids size attributes
+          const sizeAttr = attrsData.entries.find((a: any) => 
+            a.backendName.toLowerCase() === "size" || a.backendName.toLowerCase() === "size (kids)"
+          );
           if (sizeAttr && Array.isArray(sizeAttr.values)) {
             sizeArr = sizeAttr.values.map((val: any) => {
               let valueName = val.backendName || "";
@@ -89,7 +92,15 @@ export default function Product() {
           }
         }
         setSelectedSize(typeof sizeArr[0] === "string" ? sizeArr[0] : '');
-        setSelectedColor(typeof colorArr[0]?.value === "string" ? colorArr[0].value : '');
+        // Prefer the color from the main variation (if present), otherwise fall back to the first attribute value
+        const mainColorFromVariation = mainVariation
+          ? (mainVariation.variationAttributeValues || []).find((v: any) => v.attribute?.backendName?.toLowerCase() === 'color')?.attributeValue?.backendName
+          : null;
+        setSelectedColor(
+          typeof mainColorFromVariation === 'string' && mainColorFromVariation.length > 0
+            ? mainColorFromVariation
+            : (typeof colorArr[0]?.value === "string" ? colorArr[0].value : '')
+        );
         setLoading(false);
       })
       .catch(() => {
@@ -110,10 +121,50 @@ export default function Product() {
       ?.filter((vav: any) => vav.attribute?.backendName?.toLowerCase() === "color")
       .map((vav: any) => ({ value: vav.attributeValue?.backendName, image: "" })) || [];
 
+  // Sort colors in spectrum order: whites → colors → blacks
+  const sortedColors = safeColors
+    .filter(
+      (color: ColorOption, idx: number, arr: ColorOption[]) =>
+        arr.findIndex((c: ColorOption) => c.value.toLowerCase() === color.value.toLowerCase()) === idx
+    )
+    .sort((a: ColorOption, b: ColorOption) => {
+      const colorOrder: { [key: string]: number } = {
+        "white": 1,
+        "white sand": 2,
+        "stone washed white": 3,
+        "bone": 4,
+        "light beige": 5,
+        "natural stone": 6,
+        "grey melange": 7,
+        "heather grey": 8,
+        "grey": 9,
+        "light asphalt": 10,
+        "red": 11,
+        "light pink": 12,
+        "soft pink": 13,
+        "pink": 14,
+        "blush pink": 15,
+        "yellow": 16,
+        "green": 17,
+        "blue": 18,
+        "navy": 19,
+        "purple": 20,
+        "brown": 21,
+        "black": 22
+      };
+      
+      const aOrder = colorOrder[a.value.toLowerCase()] || 999;
+      const bOrder = colorOrder[b.value.toLowerCase()] || 999;
+      return aOrder - bOrder;
+    });
+
   // Extract available sizes from the product's variation data
   const safeSizes = 
     product?.variationAttributeValues
-      ?.filter((vav: any) => vav.attribute?.backendName?.toLowerCase() === "size")
+      ?.filter((vav: any) => {
+        const attrName = vav.attribute?.backendName?.toLowerCase();
+        return attrName === "size" || attrName === "size (kids)";
+      })
       .map((vav: any) => vav.attributeValue?.backendName)
       .filter((size: string, idx: number, arr: string[]) => 
         arr.findIndex((s: string) => s?.toLowerCase() === size?.toLowerCase()) === idx
@@ -125,10 +176,11 @@ export default function Product() {
     const selectedVariation = variations.find((variation: any) => {
       const variationAttributes = variation.variationAttributeValues || [];
       
-      const hasSelectedSize = !selectedSize || variationAttributes.some((attr: any) => 
-        attr.attribute?.backendName?.toLowerCase() === "size" && 
-        attr.attributeValue?.backendName === selectedSize
-      );
+      const hasSelectedSize = !selectedSize || variationAttributes.some((attr: any) => {
+        const attrName = attr.attribute?.backendName?.toLowerCase();
+        return (attrName === "size" || attrName === "size (kids)") && 
+               attr.attributeValue?.backendName === selectedSize;
+      });
       
       const hasSelectedColor = !selectedColor || variationAttributes.some((attr: any) => 
         attr.attribute?.backendName?.toLowerCase() === "color" && 
@@ -192,13 +244,13 @@ export default function Product() {
             className="w-full h-[700px] object-cover rounded mb-6"
           />
           {/* Thumbnails in a row */}
-          <div className="flex flex-row gap-4 w-full">
+          <div className="flex flex-row gap-4 w-full overflow-x-auto pb-2">
             {images.map((img, i) => (
               <img
                 key={i}
                 src={img}
                 alt={`Thumbnail ${i}`}
-                className={`w-30 h-50 object-cover rounded cursor-pointer border ${selectedImage === img ? "border-black" : "border-transparent"}`}
+                className={`w-30 h-50 flex-shrink-0 object-cover rounded cursor-pointer border ${selectedImage === img ? "border-black" : "border-transparent"}`}
                 onClick={() => setSelectedImage(img)}
               />
             ))}
@@ -238,68 +290,27 @@ export default function Product() {
             </div>
           )}
           {/* Color selector */}
-           {safeColors.length > 0 && (
+           {sortedColors.length > 0 && (
             <div className="mb-2">
               <label className="font-semibold mr-2">Color:</label>
               <div className="flex gap-2">
-                {safeColors
-                  .filter(
-                    (color: ColorOption, idx: number, arr: ColorOption[]) =>
-                      arr.findIndex((c: ColorOption) => c.value.toLowerCase() === color.value.toLowerCase()) === idx
-                  )
-                  .map((color: ColorOption) => {
+                {sortedColors.map((color: ColorOption) => {
                     const colorName = color.value.toLowerCase();
                     let colorStyle = { backgroundColor: "#ffffff" }; // default white
 
                     // 3. The switch statement matches the product's color attribute names to CSS color codes
                     switch (colorName) {
-                      case "black":
-                        colorStyle = { backgroundColor: "#000000" };
-                        break;
                       case "white":
                         colorStyle = { backgroundColor: "#ffffff" };
-                        break;
-                      case "red":
-                        colorStyle = { backgroundColor: "#ef4444" };
-                        break;
-                      case "blue":
-                        colorStyle = { backgroundColor: "#3b82f6" };
-                        break;
-                      case "green":
-                        colorStyle = { backgroundColor: "#22c55e" };
-                        break;
-                      case "yellow":
-                        colorStyle = { backgroundColor: "#facc15" };
-                        break;
-                      case "brown":
-                        colorStyle = { backgroundColor: "#92400e" };
-                        break;
-                      case "pink":
-                        colorStyle = { backgroundColor: "#f472b6" };
-                        break;
-                      case "purple":
-                        colorStyle = { backgroundColor: "#8b5cf6" };
                         break;
                       case "white sand":
                         colorStyle = { backgroundColor: "#fffbeb" };
                         break;
-                      case "light pink":
-                        colorStyle = { backgroundColor: "#fce7f3" };
+                      case "stone washed white":
+                        colorStyle = { backgroundColor: "#f9fafb" };
                         break;
-                      case "soft pink":
-                        colorStyle = { backgroundColor: "#f9a8d4" };
-                        break;
-                      case "blush pink":
-                        colorStyle = { backgroundColor: "#f472b6" };
-                        break;
-                      case "grey":
-                        colorStyle = { backgroundColor: "#9ca3af" };
-                        break;
-                      case "heather grey":
-                        colorStyle = { backgroundColor: "#d1d5db" };
-                        break;
-                      case "grey melange":
-                        colorStyle = { backgroundColor: "#e5e7eb" };
+                      case "bone":
+                        colorStyle = { backgroundColor: "#f7f3e9" };
                         break;
                       case "light beige":
                         colorStyle = { backgroundColor: "#f5f5dc" };
@@ -307,11 +318,53 @@ export default function Product() {
                       case "natural stone":
                         colorStyle = { backgroundColor: "#f3f4f6" };
                         break;
-                      case "stone washed white":
-                        colorStyle = { backgroundColor: "#f9fafb" };
+                      case "grey melange":
+                        colorStyle = { backgroundColor: "#e5e7eb" };
+                        break;
+                      case "heather grey":
+                        colorStyle = { backgroundColor: "#d1d5db" };
+                        break;
+                      case "grey":
+                        colorStyle = { backgroundColor: "#9ca3af" };
+                        break;
+                      case "light asphalt":
+                        colorStyle = { backgroundColor: "#c9d6d9" };
+                        break;
+                      case "black":
+                        colorStyle = { backgroundColor: "#000000" };
+                        break;
+                      case "red":
+                        colorStyle = { backgroundColor: "#ef4444" };
+                        break;
+                      case "light pink":
+                        colorStyle = { backgroundColor: "#fce7f3" };
+                        break;
+                      case "soft pink":
+                        colorStyle = { backgroundColor: "#f9a8d4" };
+                        break;
+                      case "pink":
+                        colorStyle = { backgroundColor: "#f472b6" };
+                        break;
+                      case "blush pink":
+                        colorStyle = { backgroundColor: "#f472b6" };
+                        break;
+                      case "yellow":
+                        colorStyle = { backgroundColor: "#facc15" };
+                        break;
+                      case "green":
+                        colorStyle = { backgroundColor: "#22c55e" };
+                        break;
+                      case "blue":
+                        colorStyle = { backgroundColor: "#3b82f6" };
                         break;
                       case "navy":
                         colorStyle = { backgroundColor: "#1e3a8a" };
+                        break;
+                      case "purple":
+                        colorStyle = { backgroundColor: "#8b5cf6" };
+                        break;
+                      case "brown":
+                        colorStyle = { backgroundColor: "#92400e" };
                         break;
                       default:
                         colorStyle = { backgroundColor: "#ffffff" };

@@ -18,7 +18,7 @@ export default function NavBarHome() {
 
   return (
     <div>
-      <div
+      {/* <div
         style={{
           top: 0,
           left: 0,
@@ -48,13 +48,13 @@ export default function NavBarHome() {
             Shop Now!
           </a>
         </span>
-      </div>
+      </div> */}
       <div className="flex items-center justify-between bg-black px-8 h-14">
         <div className="flex items-center">
           <img src="/assets/logo-white.png" alt="Sons of God Logo" className="h-5" />
         </div>
         <nav className="flex items-center gap-8 text-white text-sm">
-          {['Start', 'Fashion', 'About'].map((item) => (
+          {['Start', 'Fashion', 'About', 'Contacts'].map((item) => (
             <Link
               key={item}
               to={item.toLowerCase() === 'start' ? '/' : `/${item.toLowerCase()}`} // Ensure "Start" leads to "/"
